@@ -17,9 +17,14 @@ client.on("ready", () => {
 });
 
 function direHello(){
-    fetch('https://github.com/')
+    fetch('http://localhost:8080/messages')
     .then(res => res.text())
     .then(body => console.log(body));
+}
+function poster(){
+    fetch('http://localhost:8080/addMessage', { method: 'POST', body: 'a=1' })
+    .then(res => res.json()) // expecting a json response
+    .then(json => console.log(json));
 }
 
 client.on("messageCreate", message =>{
@@ -27,7 +32,6 @@ client.on("messageCreate", message =>{
     switch (message.content) {
         case 'ping':
             message.reply("pong");
-            message.channel.send("pongito");
             break;
         case 'help':
             message.channel.send("Commandes disponibles :\n ping : repond 'pong'");
@@ -35,7 +39,9 @@ client.on("messageCreate", message =>{
         case 'hello':
             direHello();
             break;
+        case 'post':
+            poster();
+            break;
     }
     console.log(message);
 });
-
