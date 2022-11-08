@@ -22,9 +22,9 @@ function direHello(){
     .then(body => console.log(body));
 }
 function poster(){
-    fetch('http://localhost:8080/addMessage', { method: 'POST', body: 'a=1' })
-    .then(res => res.json()) // expecting a json response
-    .then(json => console.log(json));
+    fetch('http://localhost:8080/addMessage', { method: 'POST', headers:{'content-type': 'application/json'}, body: JSON.stringify('a=1') })
+    .then(res => res.text()) // expecting a json response
+    .then(text => console.log(text));
 }
 
 client.on("messageCreate", message =>{
@@ -43,5 +43,5 @@ client.on("messageCreate", message =>{
             poster();
             break;
     }
-    console.log(message);
+    console.log(message.content);
 });
