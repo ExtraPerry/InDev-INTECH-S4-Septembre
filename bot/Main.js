@@ -10,7 +10,18 @@ const client = new Client({
         GatewayIntentBits.MessageContent
     ]
 });
+const discordModals = require('discord-modals'); // Define the discord-modals package!
+discordModals(client); // discord-modals needs your client in order to interact with modals
 client.login("MTAzNDA4NDUzNTQxNzE3NjA2NA.G4E-c2.hSoIZosWkU70ns5X6PDXof0uy9B_BQ9vaJoS3A");
+const { Modal } = require('discord-modals'); // Modal class
+
+const modal = new Modal() // We create a Modal
+	.setCustomId('modal-customid')
+	.setTitle('Modal')
+    .addComponents(
+        new TextInputComponent()
+        
+    );
 
 client.on("ready", () => {
     console.log("bot op"); 
@@ -29,6 +40,9 @@ function poster(){
 
 client.on("messageCreate", message =>{
     if (message.author.bot) return;
+    if (message.content.includes('https://' || 'http://')){
+
+    }
     switch (message.content) {
         case 'ping':
             message.reply("pong");
@@ -42,6 +56,9 @@ client.on("messageCreate", message =>{
         case 'post':
             poster();
             break;
+        case 'modal':
+            discordModals.showModal(modal);
     }
     console.log(message.content);
+
 });
