@@ -15,13 +15,13 @@ discordModals(client); // discord-modals needs your client in order to interact 
 client.login("MTAzNDA4NDUzNTQxNzE3NjA2NA.G4E-c2.hSoIZosWkU70ns5X6PDXof0uy9B_BQ9vaJoS3A");
 const { Modal } = require('discord-modals'); // Modal class
 
-const modal = new Modal() // We create a Modal
-	.setCustomId('modal-customid')
-	.setTitle('Modal')
-    .addComponents(
-        new TextInputComponent()
+// const modal = new Modal() // We create a Modal
+// 	.setCustomId('modal-customid')
+// 	.setTitle('Modal')
+//     .addComponents(
+//         new TextInputComponent()
         
-    );
+//     );
 
 client.on("ready", () => {
     console.log("bot op"); 
