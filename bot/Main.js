@@ -1,7 +1,7 @@
-// const fetch = require('node-fetch');
 const fetch = (...args) =>
 import('node-fetch').then(({ default: fetch }) => fetch(...args));
-//declarations relatives a discord
+
+//declarations relatives a discord.js
 const {Client, GatewayIntentBits} = require("discord.js");
 const client = new Client({
     intents: [
@@ -10,39 +10,33 @@ const client = new Client({
         GatewayIntentBits.MessageContent
     ]
 });
-const discordModals = require('discord-modals'); // Define the discord-modals package!
-discordModals(client); // discord-modals needs your client in order to interact with modals
+const discordModals = require('discord-modals'); 
+// discord-modals a besoin de connaître le client
+discordModals(client); 
+// renseignement du token du bot
 client.login("MTAzNDA4NDUzNTQxNzE3NjA2NA.G4E-c2.hSoIZosWkU70ns5X6PDXof0uy9B_BQ9vaJoS3A");
-const { Modal } = require('discord-modals'); // Modal class
 
-// const modal = new Modal() // We create a Modal
-// 	.setCustomId('modal-customid')
-// 	.setTitle('Modal')
-//     .addComponents(
-//         new TextInputComponent()
-        
-//     );
-
+// au démarrage du bot
 client.on("ready", () => {
-    console.log("bot op"); 
+    console.log("bot opérationnel"); 
 });
-
-function direHello(){
+// exemple de fonnction qui fait une requette GET
+function exempleGet(){
     fetch('http://localhost:8080/messages')
     .then(res => res.text())
     .then(body => console.log(body));
 }
-function poster(){
+// exemplpe de fonction qui fait une requette POST
+function exemplePost(){
     fetch('http://localhost:8080/addMessage', { method: 'POST', headers:{'content-type': 'application/json'}, body: JSON.stringify('a=1') })
-    .then(res => res.text()) // expecting a json response
+    .then(res => res.text()) // attend une reponse json
     .then(text => console.log(text));
 }
 
 client.on("messageCreate", message =>{
+    // sort de la fonction si l'auteur du message est le bot
     if (message.author.bot) return;
-    if (message.content.includes('https://' || 'http://')){
 
-    }
     switch (message.content) {
         case 'ping':
             message.reply("pong");
@@ -51,13 +45,11 @@ client.on("messageCreate", message =>{
             message.channel.send("Commandes disponibles :\n ping : repond 'pong'");
             break;
         case 'hello':
-            direHello();
+            exempleGet();
             break;
         case 'post':
-            poster();
+            exemplePost();
             break;
-        case 'modal':
-            discordModals.showModal(modal);
     }
     console.log(message.content);
 
