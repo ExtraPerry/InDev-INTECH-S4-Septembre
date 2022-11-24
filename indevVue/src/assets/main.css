@@ -1,5 +1,8 @@
 @import './base.css';
+body {
+  background-color: #202225 ;
 
+}
 #app {
 
 }
@@ -13,7 +16,6 @@
 @media (min-width: 1024px) {
   body {
     margin: 0%;
-    background-color: #202225 ;
     
   }
 

@@ -21,14 +21,18 @@ client.on("ready", () => {
     console.log("bot opérationnel"); 
 });
 // exemple de fonnction qui fait une requette GET
-function exempleGet(){
-    fetch('http://localhost:8080/messages')
+function exempleGet(url){
+    fetch(url)
     .then(res => res.text())
     .then(body => console.log(body));
 }
 // exemplpe de fonction qui fait une requette POST
-function exemplePost(){
-    fetch('http://localhost:8080/addMessage', { method: 'POST', headers:{'content-type': 'application/json'}, body: JSON.stringify('a=1') })
+function exemplePost(url){
+    fetch(url, {
+        method: 'POST', 
+        headers:{'content-type': 'application/json'},
+        body: JSON.stringify('a=1') 
+    })
     .then(res => res.text()) // attend une reponse json
     .then(text => console.log(text));
 }
@@ -44,11 +48,11 @@ client.on("messageCreate", message =>{
         case 'help':
             message.channel.send("Commandes disponibles :\n ping : repond 'pong'");
             break;
-        case 'hello':
-            exempleGet();
+        case 'get':
+            exempleGet('http://localhost:8080/messages');
             break;
         case 'post':
-            exemplePost();
+            exemplePost('http://localhost:8080/addMessage');
             break;
     }
     console.log(message.content);
