@@ -1,0 +1,7 @@
+{
+	"_Comments_1": "This file should be empty on the git as it contains all the private data relative to the bot as well as some parameters. Though there should be a default file set up on the git to serve as a base from which work can be done.",
+	"_Comments_2": "Site to calculate the intents --Here-- >>> https://discord-intents-calculator.vercel.app/",
+	
+	"token": "NzQ0MjYyNTI0MTY1MTYxMDYy.G9ZrCW.3rVeJNXwXPaaSce6GOjhm4DncRciAwkrx-zW-I",
+	"intents": "32257"
+}

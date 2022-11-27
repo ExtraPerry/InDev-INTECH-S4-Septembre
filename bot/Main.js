@@ -1,21 +1,41 @@
-// const fetch = require('node-fetch');
+//Imports
+const Discord = require("discord.js");
+const config = require('./config.json');
+const loadCommands = require('./Loaders/LoadCommands');
+
+//Get Fetch libraries (https).
 const fetch = (...args) =>
 import('node-fetch').then(({ default: fetch }) => fetch(...args));
-//declarations relatives a discord
-const {Client, GatewayIntentBits} = require("discord.js");
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
-    ]
-});
-client.login("MTAzNDA4NDUzNTQxNzE3NjA2NA.G4E-c2.hSoIZosWkU70ns5X6PDXof0uy9B_BQ9vaJoS3A");
 
-client.on("ready", () => {
-    console.log("bot op"); 
+
+//Bot Intents (request perms) & Bot Token & Assign commands & Bot start-up.
+const intents = new Discord.IntentsBitField(config.intents);
+const client = new Discord.Client(intents);
+
+const token = config.token;
+client.login(token);
+
+loadCommands(client);
+
+client.on("ready", async () => {
+    console.log(`${client.user.tag} is now Online !`);
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Functions.
 function direHello(){
     fetch('http://localhost:8080/messages')
     .then(res => res.text())
@@ -26,22 +46,3 @@ function poster(){
     .then(res => res.text()) // expecting a json response
     .then(text => console.log(text));
 }
-
-client.on("messageCreate", message =>{
-    if (message.author.bot) return;
-    switch (message.content) {
-        case 'ping':
-            message.reply("pong");
-            break;
-        case 'help':
-            message.channel.send("Commandes disponibles :\n ping : repond 'pong'");
-            break;
-        case 'hello':
-            direHello();
-            break;
-        case 'post':
-            poster();
-            break;
-    }
-    console.log(message.content);
-});
