@@ -32,7 +32,7 @@ client.login(token);        //Assign the token to the client for login.
 deployCommands(clientId, guildId, token, commandFiles);
 console.log(`In'DevS >>> Slash command succesfully deployed to server.`)
 
-//Commands init
+//Commands init for the client (bot).
 client.commands = new Collection();     //Create a collection to store all the commands inside of the client object.
 
 for (const file of commandFiles) {
