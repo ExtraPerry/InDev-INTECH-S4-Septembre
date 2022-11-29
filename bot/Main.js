@@ -65,8 +65,8 @@ client.on(Events.InteractionCreate, async interaction => {
 	}
 
 	try {       //Attempt to execute the command.
-		await command.execute(interaction, client);
-        console.log(`In'DevR >>> Replied to ${interaction.user.tag} for "${interaction.commandName}" command.`);
+		await command.execute(interaction);
+        console.log(`In'DevR >>> Replied to ${interaction.user.id} for "${interaction.commandName}" command.`);
 	} catch (error) {       //Return an error message if something went wrong.
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
