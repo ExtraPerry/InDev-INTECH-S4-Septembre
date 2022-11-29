@@ -13,8 +13,8 @@
 <script setup>
 import {ref, reactive} from 'vue';
 
-const admin = false;
-const home = true;
+/*const admin = false;
+const home = true;*/
 
 async function fetchTest(){
           await fetch('http://localhost:8080/messages')
