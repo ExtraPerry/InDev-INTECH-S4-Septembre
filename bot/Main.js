@@ -53,22 +53,45 @@ client.on("ready", () => {      //Startup log message.
     console.log(`In'DevS >>> ${client.user.tag} is now Online !`);
 })
 
-//Client interaction response.
-client.on(Events.InteractionCreate, async interaction => {
-	if (!interaction.isChatInputCommand()) return;      //If the interaction is a chat input ignore.
 
-	const command = interaction.client.commands.get(interaction.commandName);   //Match interation command to client command, null (false) if no match is found.
+
+//Client SlashCommand interaction response.
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isChatInputCommand()) return;      //If the interaction is a Command submited by a user through the chat input  don't ignore.
+
+	const command = interaction.client.commands.get(interaction.commandName);   //Match interation Command to client command, null (false) if no match is found.
 
 	if (!command) {     //Check if the command is valid.
 		console.log(`In'DevE >>> No command matching ${interaction.commandName} was found for ${interaction.user.id}.`);
 		return;
 	}
 
-	try {       //Attempt to execute the command.
+	try {       //Attempt to execute the Command.
 		await command.execute(interaction);
-        console.log(`In'DevR >>> Replied to ${interaction.user.id} for "${interaction.commandName}" command.`);
+        console.log(`In'DevR >>> Replied to ${interaction.user.id} for "${interaction.commandName}" Command.`);
 	} catch (error) {       //Return an error message if something went wrong.
 		console.error(error);
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		await interaction.reply({ content: 'There was an error while executing this command !', ephemeral: true });
+	}
+});
+
+
+//Client ModalSubmit interaction response.
+client.on(Events.InteractionCreate, async interaction =>{
+	if (!interaction.isModalSubmit()) return;		//If the interaction is a Modal submited by a user don't ignore.
+	
+	const command = interaction.client.commands.get(interaction.customId);	//Match interaction ModalSubmit to client command, null (false) if no match is found.
+	
+	if (!command) {     //Check if the command is valid.
+		console.log(`In'DevE >>> No ModalSubmit response matching ${interaction.customId} was found for ${interaction.user.id}.`);
+		return;
+	}
+	
+	try {       //Attempt to execute the response to the ModalSubmit.
+		await command.respond(interaction);
+        console.log(`In'DevR >>> Replied to ${interaction.user.id} for "${interaction.customId}" ModalSubmit.`);
+	} catch (error) {       //Return an error message if something went wrong.
+		console.error(error);
+		await interaction.reply({ content: 'There was an error while responding to the form !', ephemeral: true });
 	}
 });
