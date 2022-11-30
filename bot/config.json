@@ -1,5 +1,6 @@
 {
     "token":"Bot Token Here",
     "clientId": "Bot ID Here",
-	"guildId": "Server ID Here"
+	"guildId": "Server ID Here",
+    "apiIP" : "http://localhost:8080"
 }
