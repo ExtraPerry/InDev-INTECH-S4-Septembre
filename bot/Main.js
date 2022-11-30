@@ -27,11 +27,18 @@ function exempleGet(url){
     .then(body => console.log(body));
 }
 // exemplpe de fonction qui fait une requette POST
-function exemplePost(url){
+function postMessage(url, message){
+    let messageClass = {
+        id : message.id,
+        content : message.content,
+        author : message.author.username
+    };
+    console.log(JSON.stringify(messageClass));
+
     fetch(url, {
         method: 'POST', 
         headers:{'content-type': 'application/json'},
-        body: JSON.stringify('a=1') 
+        body: JSON.stringify(messageClass) 
     })
     .then(res => res.text()) // attend une reponse json
     .then(text => console.log(text));
@@ -52,7 +59,7 @@ client.on("messageCreate", message =>{
             exempleGet('http://localhost:8080/messages');
             break;
         case 'post':
-            exemplePost('http://localhost:8080/addMessage');
+            postMessage('http://localhost:8080/addMessage', message);
             break;
     }
     console.log(message.content);
