@@ -17,8 +17,10 @@ public class IndexController {
     @CrossOrigin(origins = "http://127.0.0.1:5173/")
     @GetMapping("/messages")
     public String displayMessages() {
+        Gson gson = new Gson();
+        String json = gson.toJson(messages);
 
-        return "ok";
+        return json;
     }
 
     @PostMapping("/addMessage")
@@ -29,10 +31,7 @@ public class IndexController {
                 a.getContent(),
                 a.getAuthor()
         );
-        Gson gson = new Gson();
-        String json = gson.toJson(message);
-        System.out.println(json);
         this.messages.add(a);
-        return (json);
+        return ("message added");
     }
 }

@@ -33,7 +33,6 @@ function postMessage(url, message){
         content : message.content,
         author : message.author.username
     };
-    console.log(JSON.stringify(messageClass));
 
     fetch(url, {
         method: 'POST', 
