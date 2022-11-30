@@ -22,7 +22,7 @@ public class IndexController {
     }
 
     @PostMapping("/addMessage")
-    public Message test(@RequestBody Message a) {
+    public String test(@RequestBody Message a) {
         System.out.println(a.getContent());
         Message message = new Message(
                 a.getId(),
@@ -33,6 +33,6 @@ public class IndexController {
         String json = gson.toJson(message);
         System.out.println(json);
         this.messages.add(a);
-        return (a);
+        return (json);
     }
 }

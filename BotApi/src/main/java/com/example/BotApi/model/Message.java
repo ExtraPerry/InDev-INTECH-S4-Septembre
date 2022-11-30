@@ -10,7 +10,7 @@ public class Message {
     @Id
     private String id;
     private String content;
-    private String auteur;
+    private String author;
     private String description;
     @ManyToOne
     @JoinColumn(name = "tag_id")
@@ -26,16 +26,16 @@ public class Message {
 
     public Message() {}
 
-    public Message(String id, String content, String auteur, String description){
+    public Message(String id, String content, String author, String description){
         this.content = content;
         this.id = id;
-        this.auteur = auteur;
+        this.author = author;
         this.description = description;
     }
-    public Message(String id, String content, String auteur){
+    public Message(String id, String content, String author){
         this.content = content;
         this.id = id;
-        this.auteur = auteur;
+        this.author = author;
     }
 
 
@@ -54,11 +54,11 @@ public class Message {
     }
 
     public String getAuthor() {
-        return auteur;
+        return author;
     }
 
-    public void setAuteur(String auteur) {
-        this.auteur = auteur;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getDescription() {
