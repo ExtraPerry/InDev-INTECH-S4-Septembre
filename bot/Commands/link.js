@@ -81,24 +81,31 @@ module.exports = {
 		}
 		
 		//Build an Embed for the user to see what they submitted.
-		const embed = new EmbedBuilder()
-			.setColor('Green')
-			.setAuthor({ name: `${user.username}`, iconURL: `${user.displayAvatarURL()}`})
-			.setThumbnail('https://s3-eu-west-1.amazonaws.com/assets.atout-on-line.com/images/ingenieur/Logos_Ecoles/2018_2021/intech_300.jpg')
-			.setTitle(link)
-			.setURL(link)
-			.setFields(
-				{ name: 'Title :', value: `${title}`},
-				{ name: 'Description :', value: `${description}`},
-				{ name: 'Tags :', value: `${embedTags}` } 
-			)
-			.setFooter({ text: 'In\'Dev', iconURL: 'https://cdn.discordapp.com/attachments/1027155649223729210/1047527511711563887/index.png' })
-			.setTimestamp();
+		let embed;
+		try{
+			embed = new EmbedBuilder()
+				.setColor('Green')
+				.setAuthor({ name: `${user.username}`, iconURL: `${user.displayAvatarURL()}`})
+				.setThumbnail('https://s3-eu-west-1.amazonaws.com/assets.atout-on-line.com/images/ingenieur/Logos_Ecoles/2018_2021/intech_300.jpg')
+				.setTitle(link)
+				.setURL(link)
+				.setFields(
+					{ name: 'Title :', value: `${title}`},
+					{ name: 'Description :', value: `${description}`},
+					{ name: 'Tags :', value: `${embedTags}` } 
+				)
+				.setFooter({ text: 'In\'Dev', iconURL: 'https://cdn.discordapp.com/attachments/1027155649223729210/1047527511711563887/index.png' })
+				.setTimestamp();
+		}catch(error){
+			console.error(error);
+			await interaction.reply({ embeds: [new EmbedBuilder().setColor('DarkRed').setDescription(`Something went wrong, maybe your URL link was invalid ?`)], ephemeral: true });
+			return;
+		}
 		
 		//Prepare text for the json (if needed).
 		let jsonTags = '';
 		for(const tag of tags){
-			if(jsonTags !== '') jsonTags += ', ';
+			if(jsonTags !== '') jsonTags += ',';
 			jsonTags += `"${tag}"`;
 		}
 		

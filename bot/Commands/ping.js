@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -6,6 +6,6 @@ module.exports = {
 		.setDescription('Replies with latency in ms.'),
 
 	async execute(interaction) {
-		await interaction.reply({ content: `Latency is ${interaction.client.ws.ping} ms.` , ephemeral: true });
+		await interaction.reply({ embeds: [new EmbedBuilder().setColor('Green').setDescription(`Latency is ${interaction.client.ws.ping} ms.`)], ephemeral: true });
 	},
 };
