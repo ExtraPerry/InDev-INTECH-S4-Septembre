@@ -1,13 +1,18 @@
 package com.example.BotApi.item;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.map.repository.config.EnableMapRepositories;
 import org.springframework.data.repository.CrudRepository;
+import com.example.BotApi.item.InMemoryItemRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+
 
 @Service
 @EnableMapRepositories
@@ -16,15 +21,14 @@ public class ItemService {
 
     public ItemService(CrudRepository<Item, Long> repository) {
         this.repository = repository;
-
         this.repository.saveAll(defaultItems());
     }
 
     private static List<Item> defaultItems() {
         return List.of(
-                new Item(1L, "CRUD", "https://auth0.com/blog/spring-boot-java-tutorial-build-a-crud-api/#What-You-Will-Build", "Tasty", "https://cdn.auth0.com/blog/whatabyte/burger-sm.png"),
-                new Item(2L, "documentation", "https://docs.spring.io/spring-data/keyvalue/docs/current/api/org/springframework/data/map/repository/config/EnableMapRepositories.html", "Cheesy", "https://cdn.auth0.com/blog/whatabyte/pizza-sm.png"),
-                new Item(3L, "dependance", "https://mvnrepository.com/artifact/org.springframework.data/spring-data-keyvalue/3.0.0", "Informative", "https://cdn.auth0.com/blog/whatabyte/tea-sm.png")
+                new Item(1L, "Burger", "aaa", "Tasty", "https://cdn.auth0.com/blog/whatabyte/burger-sm.png"),
+                new Item(2L, "Pizza", "bbb", "Cheesy", "https://cdn.auth0.com/blog/whatabyte/pizza-sm.png"),
+                new Item(3L, "Tea", "rrr", "Informative", "https://cdn.auth0.com/blog/whatabyte/tea-sm.png")
         );
     }
 
