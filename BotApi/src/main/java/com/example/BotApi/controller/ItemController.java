@@ -1,74 +1,122 @@
 package com.example.BotApi.controller;
 
-import com.example.BotApi.item.InMemoryItemRepository;
-import com.example.BotApi.item.Item;
-import com.example.BotApi.item.Itemrepo;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-// ✨ New! 👇 Compact imports ✨
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.BotApi.model.Item;
+import com.example.BotApi.repository.ItemRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@CrossOrigin(origins = "http://localhost:8081")
 @RestController
-@RequestMapping("api/menu/items")
+@RequestMapping("/api")
 public class ItemController {
+
     @Autowired
-    private InMemoryItemRepository repo;
+    ItemRepository itemRepository;
 
-    public ItemController(InMemoryItemRepository repo) {
-        this.repo = repo;
+    @GetMapping("/items")
+    public ResponseEntity<List<Item>> getAllItems(@RequestParam(required = false) String title) {
+        try {
+            List<Item> items = new ArrayList<Item>();
+
+            if (title == null)
+                itemRepository.findAll().forEach(items::add);
+            else
+                itemRepository.findByTitleContaining(title).forEach(items::add);
+
+            if (items.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(items, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @GetMapping
-    public ResponseEntity<List<Item>> findAll() {
-        List<Item> items = repo.findAll();
-        return ResponseEntity.ok().body(items);
+    @GetMapping("/items/{id}")
+    public ResponseEntity<Item> getItemById(@PathVariable("id") long id) {
+        Optional<Item> itemData = itemRepository.findById(id);
+
+        if (itemData.isPresent()) {
+            return new ResponseEntity<>(itemData.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Item> find(@PathVariable("id") Long id) {
-        Optional<Item> item = repo.findById(id);
-        return ResponseEntity.of(item);
+    @PostMapping("/items")
+    public ResponseEntity<Item> createItem(@RequestBody Item item) {
+        try {
+            Item _item = itemRepository
+                    .save(new Item( item.getId(), item.getTitle(), item.getLink(), item.getDescription(), item.getImage()));
+            return new ResponseEntity<>(_item, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @PostMapping
-    public ResponseEntity<Item> create(@RequestBody Item item) {
-        Item created = repo.create(item);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(created.getId())
-                .toUri();
-        return ResponseEntity.created(location).body(created);
+    @PutMapping("/items/{id}")
+    public ResponseEntity<Item> updateItem(@PathVariable("id") long id, @RequestBody Item item) {
+        Optional<Item> itemData = itemRepository.findById(id);
+
+        if (itemData.isPresent()) {
+            Item _item = itemData.get();
+            _item.setTitle(item.getTitle());
+            _item.setDescription(item.getDescription());
+            _item.setLink(item.getLink());
+            return new ResponseEntity<>(itemRepository.save(_item), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Item> update(
-            @PathVariable("id") Long id,
-            @RequestBody Item updatedItem) {
-
-        Optional<Item> updated = repo.update(id, updatedItem);
-
-        return updated
-                .map(value -> ResponseEntity.ok().body(value))
-                .orElseGet(() -> {
-                    Item created = repo.create(updatedItem);
-                    URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                            .path("/{id}")
-                            .buildAndExpand(created.getId())
-                            .toUri();
-                    return ResponseEntity.created(location).body(created);
-                });
+    @DeleteMapping("/items/{id}")
+    public ResponseEntity<HttpStatus> deleteItem(@PathVariable("id") long id) {
+        try {
+            itemRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    // ✨ New! 👇 DELETE definition ✨
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Item> delete(@PathVariable("id") Long id) {
-        repo.delete(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/items")
+    public ResponseEntity<HttpStatus> deleteAllItems() {
+        try {
+            itemRepository.deleteAll();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @GetMapping("/items/published")
+    public ResponseEntity<List<Item>> findByPublished() {
+        try {
+            List<Item> items = itemRepository.findByTitle("le recherché");
+
+            if (items.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(items, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
