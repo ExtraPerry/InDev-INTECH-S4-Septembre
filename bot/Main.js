@@ -72,7 +72,10 @@ client.on(Events.InteractionCreate, async interaction => {
 	} catch (error) {       //Return an error message if something went wrong.
 		console.error(error);
 		await interaction.reply({
-			embeds: [new EmbedBuilder().setColor('DarkRed').setDescription('There was an error while executing this command !')],
+			embeds: [new EmbedBuilder()
+			.setColor('DarkRed')
+			.setDescription('There was an error while executing this command !')
+			],
 			ephemeral: true
 		});
 	}
@@ -96,7 +99,10 @@ client.on(Events.InteractionCreate, async interaction =>{
 	} catch (error) {       //Return an error message if something went wrong.
 		console.error(error);
 		await interaction.reply({
-			embeds: [new EmbedBuilder().setColor('DarkRed').setDescription('There was an error while executing this command !')],
+			embeds: [new EmbedBuilder()
+			.setColor('DarkRed')
+			.setDescription('There was an error while executing this command !')
+			],
 			ephemeral: true
 		});
 	}

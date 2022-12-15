@@ -73,7 +73,7 @@ module.exports = {
 		
 		const user = interaction.user;
 		
-		//Prepare text for the embed (if needed).
+		//Prepare text for the embed.
 		let embedTags = '';
 		for(const tag of tags){
 			if(embedTags !== '') embedTags += ' | ';
@@ -99,13 +99,16 @@ module.exports = {
 		}catch(error){
 			console.error(error);
 			await interaction.reply({
-				embeds: [new EmbedBuilder().setColor('DarkRed').setDescription(`Something went wrong, maybe your URL link was invalid ?`)],
+				embeds: [new EmbedBuilder()
+					.setColor('DarkRed')
+					.setDescription(`Something went wrong, maybe your URL link was invalid ?`)
+					],
 				ephemeral: true
 			});
 			return;
 		}
 		
-		//Prepare text for the json (if needed).
+		//Prepare text for the json.
 		let jsonTags = '';
 		for(const tag of tags){
 			if(jsonTags !== '') jsonTags += ',';
@@ -113,15 +116,31 @@ module.exports = {
 		}
 		
 		//Build a JSON to send to the API.
-		const json = `{"title":"${title}","link":"${link}","tags":[${jsonTags}],"description":"${description}","userId":"${user.id}","timeStamp":"${Date()}"}`;
-		//Note Date.now() is time in ms since Jan 1, 1970, 00:00:00 UTC.
-		
+		const json = `{"title":"${title}","link":"${link}","tags":[${jsonTags}],"description":"${description}","userId":"${user.id}","messageId":"${null}","timeStamp":"${new Date().getTime()}"}`;
+		//Note Date.getTime() is time in ms since Jan 1, 1970, 00:00:00 UTC.
 		console.log(json);
+		try{
+			postMessage(json);
+		}catch(error){
+			await interaction.reply({
+				embeds: [new EmbedBuilder()
+					.setColor('DarkRed')
+					.setDescription(`Unable to send the contents to the api.`)
+					],
+				ephemeral: true
+			});
+			return;
+		}
+		
 		
 		//Send to user data retrived.
 		await interaction.reply({
 			content: user.toString(),
 			embeds: [embed]
+		}).then( sent => {
+			console.log("<--->");
+			console.log(sent.id);
+			console.log("<--->");
 		});
 		
 	}
