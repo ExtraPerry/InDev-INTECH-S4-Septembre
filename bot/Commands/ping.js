@@ -7,7 +7,10 @@ module.exports = {
 
 	async execute(interaction) {
 		await interaction.reply({
-			embeds: [new EmbedBuilder().setColor('Green').setDescription(`Latency is ${interaction.client.ws.ping} ms.`)],
+			embeds: [new EmbedBuilder()
+			.setColor('Green')
+			.setDescription(`Latency is ${interaction.client.ws.ping} ms.`)
+			],
 			ephemeral: true
 		});
 	},
