@@ -14,7 +14,7 @@ const discordModals = require('discord-modals');
 // discord-modals a besoin de connaître le client
 discordModals(client); 
 // renseignement du token du bot
-client.login("MTAzNDA4NDUzNTQxNzE3NjA2NA.G4E-c2.hSoIZosWkU70ns5X6PDXof0uy9B_BQ9vaJoS3A");
+client.login("MTAzNDA4NDUzNTQxNzE3NjA2NA.G8rT4_.23ZaMtp82r4ZK-BLBx4WVxoUWJQbGEpEXSqJ_U");
 
 // au démarrage du bot
 client.on("ready", () => {

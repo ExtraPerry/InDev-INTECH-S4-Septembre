@@ -5,6 +5,7 @@ node_modules/
 *.tsbuildinfo
 web_modules/
 jspm_packages/
+config.json
 
 # Runtime data
 pids
