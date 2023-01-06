@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } = require('discord.js');
+var Message = require('../Class/Message');
 const postMessage = require('../Functions/postMessage');
 
 module.exports = {
@@ -108,19 +109,26 @@ module.exports = {
 			return;
 		}
 		
+		//Build a JSON to send to the API.
+		
+		/** --- --- ---
+		//Json written by hand here.
 		//Prepare text for the json.
 		let jsonTags = '';
 		for(const tag of tags){
 			if(jsonTags !== '') jsonTags += ',';
 			jsonTags += `"${tag}"`;
 		}
-		
-		//Build a JSON to send to the API.
 		const json = `{"title":"${title}","link":"${link}","tags":[${jsonTags}],"description":"${description}","userId":"${user.id}","messageId":"${null}","timeStamp":"${new Date().getTime()}"}`;
 		//Note Date.getTime() is time in ms since Jan 1, 1970, 00:00:00 UTC.
+		--- --- ---*/ 
+		
+		let message = new Message(title, link, tags, description, user.id, null, null);
+		let json = JSON.stringify(message);
 		console.log(json);
 		try{
-			postMessage(json);
+			postMessage(json); //Somehow still crashes the instance even though it should be caught by a try-catch . . .
+			//When the api is not able to recieve. 
 		}catch(error){
 			await interaction.reply({
 				embeds: [new EmbedBuilder()
@@ -132,12 +140,12 @@ module.exports = {
 			return;
 		}
 		
-		
 		//Send to user data retrived.
 		await interaction.reply({
 			content: user.toString(),
 			embeds: [embed]
-		}).then( sent => {
+		})
+			.then( sent => {
 			console.log("<--->");
 			console.log(sent.id);
 			console.log("<--->");

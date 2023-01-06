@@ -1,37 +1,36 @@
 package com.example.BotApi.controller;
 
 import com.example.BotApi.model.Message;
-import com.google.gson.Gson;
+import com.example.BotApi.repository.MessageRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @RestController
-
 public class IndexController {
-
-    private List<Message> messages = new ArrayList<Message>();
-
-    @CrossOrigin(origins = "http://127.0.0.1:5173/")
-    @GetMapping("/messages")
-    public String displayMessages() {
-        Gson gson = new Gson();
-        String json = gson.toJson(messages);
-
-        return json;
-    }
-
-    @PostMapping("/addMessage")
-    public String test(@RequestBody Message a) {
-        System.out.println(a.getContent());
-        Message message = new Message(
-                a.getId(),
-                a.getContent(),
-                a.getAuthor()
-        );
-        this.messages.add(a);
+	
+	//Attributes.
+	@Autowired	//Assign to the database.
+	private MessageRepository messageRepo;
+	
+	//Endpoints.
+	@GetMapping("/getMessages") //Get all the messages from the database that were given by the discord bot.
+	public Iterable<Message> getMessages(){
+		return getMessageRepo().findAll();
+	}
+	@PostMapping("/addMessage")	//Add a modal form report from the discord bot to the database.
+    public String fallback(@RequestBody Message message) {
+		this.getMessageRepo().save(message);
         return ("message added");
     }
+	
+    @PostMapping("/addMessageFallback")	//It's a testing endpoint for the discord bot to see if it connects properly. (Basically just sending a response).
+    public String fallbackTest() {
+        return ("Nothing added just returned that we recieved something.");
+    }
+
+    //Getter & Setters.
+	public MessageRepository getMessageRepo() {
+		return messageRepo;
+	}
 }
