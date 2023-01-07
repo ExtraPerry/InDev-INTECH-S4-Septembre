@@ -123,7 +123,7 @@ module.exports = {
 		//Note Date.getTime() is time in ms since Jan 1, 1970, 00:00:00 UTC.
 		--- --- ---*/ 
 		
-		let message = new Message(title, link, tags, description, user.id, null, null);
+		let message = new Message(title, link, tags, true, description, user.id, null, new Date().getUTCMilliseconds());
 		let json = JSON.stringify(message);
 		console.log(json);
 		try{
@@ -143,7 +143,9 @@ module.exports = {
 		//Send to user data retrived.
 		await interaction.reply({
 			content: user.toString(),
-			embeds: [embed]
+			embeds: [embed],
+			components: [],
+			ephemeral: false
 		})
 			.then( sent => {
 			console.log("<--->");

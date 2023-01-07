@@ -4,8 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-
-import java.sql.Timestamp;
+import java.util.Date;
 
 //Class.
 @Entity
@@ -16,23 +15,25 @@ public class Message {
 	@GeneratedValue
 	private int id;
 	//Attributes.
-    private String title;
-    private String link;
-    private String[] tags;
-    private String description;
-    private String userId;
-    private String messageId;
-    private Timestamp time;
+    private String title;		//The title of the message. Gives an idea of what it is in one sentence or a few words.
+    private String link;		//The link that the message will contain.
+    private String[] tags;		//The tags used to describe the contents of the message for archiving purposes.
+    private Boolean modal;		//A boolean to keep track of whether the message originated from a modal or a normal message that was caught.
+    private String description;	//The description given by the user OR the content of the message if it wasn't a modal form.
+    private String userId;		//The id of the discord user to which this is associated.
+    private String messageId;	//The id of the message in discord to which this is associated.
+    private Long time;			//The time attribute should be in milliseconds as a Long value. This will help with keeping the data compatible between any type of language in theory.
     
     //Constructors.
     public Message() {
    
     }
     
-    public Message(final String title, final String link, final String[] tags, final String description, final String userId, final String messageId, final Timestamp time) {
+    public Message(final String title, final String link, final String[] tags, final Boolean modal, final String description, final String userId, final String messageId, final Long time) {
     	this.setTitle(title);
     	this.setLink(link);
     	this.setTags(tags);
+    	this.setModal(modal);
     	this.setDescription(description);
     	this.setUserId(userId);
     	this.setMessageId(messageId);
@@ -46,7 +47,7 @@ public class Message {
 	public String getTitle() {
 		return title;
 	}
-	private void setTitle(String title) {
+	public void setTitle(String title) {
 		this.title = title;
 	}
 	public String getLink() {
@@ -60,6 +61,12 @@ public class Message {
 	}
 	private void setTags(String[] tags) {
 		this.tags = tags;
+	}
+	public Boolean isModal() {
+		return modal;
+	}
+	private void setModal(Boolean modal) {
+		this.modal = modal;
 	}
 	public String getDescription() {
 		return description;
@@ -79,10 +86,14 @@ public class Message {
 	private void setMessageId(String messageId) {
 		this.messageId = messageId;
 	}
-	public Timestamp getTime() {
+	public Long getTime() {
 		return time;
 	}
-	private void setTime(Timestamp time) {
+	private void setTime(Long time) {
+		if (time == null) {
+			time = new Date().getTime();
+		}
+		
 		this.time = time;
 	}
 	

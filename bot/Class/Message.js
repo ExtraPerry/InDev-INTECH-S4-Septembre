@@ -3,15 +3,16 @@ module.exports =
 		//Class - This class is only needed to store specified information and then serialise it.
 		class Message {
 			//Constructor
-			constructor(title, link, tags, description, userId, messageId, time){
+			constructor(title, link, tags, modal, description, userId, messageId, time){
 				//Attributes.
-				this.title = title;	//String - text.
-				this.link = link;	//String - URL link as text.
-				this.tags = tags;	//String - List of tag (a tag is text more importantly one word).
-				this.description = description; //String - text.
-				this.userId = userId;	//String - The discord snowflake of the userId in text.
-				this.messageId = messageId;	//String - The discord snowflake of the messageId in text.
-				this.time = time;	//Date or TimeStamp - The time at which the Message Class was sent to the Api.
+				this.title = title;					//The title of the message. Gives an idea of what it is in one sentence or a few words.
+				this.link = link;					//The link that the message will contain.
+				this.tags = tags;					//The tags used to describe the contents of the message for archiving purposes.
+				this.modal = modal;					//A boolean to keep track of whether the message originated from a modal or a normal message that was caught.
+				this.description = description;		//The description given by the user OR the content of the message if it wasn't a modal form.
+				this.userId = userId;				//The id of the discord user to which this is associated.
+				this.messageId = messageId;			//The id of the message in discord to which this is associated.
+				this.time = time;					//The time attribute should be in milliseconds as a Long value. This will help with keeping the data compatible between any type of language in theory.
 			}
 }
 
