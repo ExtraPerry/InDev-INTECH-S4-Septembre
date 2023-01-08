@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-public class IndexController {
+public class DiscordController {
 	
 	//Attributes.
 	@Autowired	//Assign to the database.
