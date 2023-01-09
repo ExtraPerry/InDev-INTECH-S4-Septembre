@@ -22,6 +22,3 @@ async function fetchTest(){
         }
 
 </script>
-<style>
-
-</style>
