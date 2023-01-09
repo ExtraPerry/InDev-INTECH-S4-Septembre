@@ -6,48 +6,45 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
+//Class.
 @Entity
-public class DiscordUser {
+public class Category {
+		
 	//DB id value attribute.
 	@Id
 	@GeneratedValue
 	private int id;
 	//Attributes.
-	private String name;								//NameTag of the discord user.
-	private String userId;								//UserId of the discord user.
-	
-	@OneToMany(mappedBy = "discordUser")	//MappedBy relates to the variable name in the other class it is associated to.
-	private Set<Item> Items = new HashSet<Item>();	//Association to the items created by the discord user.
-
-	//Constructor.
-	public DiscordUser() {
+	private String name;
 		
-	}
+	@ManyToMany(mappedBy = "categories")	//MappedBy relates to the variable name in the other class it is associated to.
+	private Set<Item> items = new HashSet<Item>();
 	
-	public DiscordUser(final String name, final String userId) {
+	@ManyToMany
+	private Set<Tag> tags = new HashSet<Tag>();
+		
+	//Constructor.
+	public Category() {
+			
+	}
+		
+	public Category(final String name) {
 		this.setName(name);
-		this.setUserId(userId);
 	}
-	
-	//Getter & Setter
+		
+	//Getter & Setter.
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	private void setName(String name) {
 		this.name = name;
 	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
 	public Set<Item> getItems(){
-		return this.Items;
+		return this.items;
 	}
-	
+		
 	//Custom items attribute.
 	public Item findItem(String name) {
 	    for (Item item : this.getItems()) {
@@ -65,5 +62,5 @@ public class DiscordUser {
 	public void removeItem(Item item) {
 		this.getItems().remove(item);
 	}
-	
 }
+

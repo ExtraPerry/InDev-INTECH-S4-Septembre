@@ -4,16 +4,17 @@ import com.example.BotApi.model.DiscordMessage;
 import com.example.BotApi.model.DiscordUser;
 import com.example.BotApi.model.Item;
 import com.example.BotApi.model.Tag;
-import com.example.BotApi.repository.DiscordMessageRepository;
 import com.example.BotApi.repository.DiscordUserRepository;
 import com.example.BotApi.repository.ItemRepository;
 import com.example.BotApi.repository.TagRepository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
@@ -21,8 +22,6 @@ public class DiscordController {
 	
 	//Attributes.
 	@Autowired	//Assign to the database.
-	private DiscordMessageRepository messageRepo;
-	@Autowired
 	private ItemRepository itemRepo;
 	@Autowired
 	private TagRepository tagRepo;
@@ -30,12 +29,8 @@ public class DiscordController {
 	private DiscordUserRepository discordUserRepo;
 	
 	//Endpoints.
-	@GetMapping("/getMessages") //Get all the messages from the database that were given by the discord bot.
-	public Iterable<DiscordMessage> getMessages(){
-		return getMessageRepo().findAll();
-	}
 	@PostMapping("/addMessage")	//Add a modal form report from the discord bot to the database.
-    public String fallback(@RequestBody DiscordMessage discordMessage) {
+    public String addMessage(@RequestBody DiscordMessage discordMessage) {
 		
 		//Check if the discord user exists else make a new user. <----->
 		DiscordUser discordUser = this.findDiscordUserByUserId(this.getDiscordUserRepo().findAll(), discordMessage.getUserId());
@@ -49,7 +44,7 @@ public class DiscordController {
 		}
 		
 		//Check if each tag in the list exists else make a new tag for the list if needed.	<----->
-		List<Tag> tagList = new ArrayList<Tag>();
+		Set<Tag> tagSet = new HashSet<Tag>();
 		for (String messageTag : discordMessage.getTags()) {
 			//Check if tag exists.
 			Tag tag = this.findTagByName(this.getTagRepo().findAll(), messageTag);
@@ -58,7 +53,7 @@ public class DiscordController {
 				tag = this.getTagRepo().save(new Tag(messageTag));
 			}
 			//Save tag to the tag list.
-			tagList.add(tag);
+			tagSet.add(tag);
 		}
 		
 		//Create a new Item to store the message date into the database.	<----->
@@ -66,7 +61,7 @@ public class DiscordController {
 				new Item(
 					discordMessage.getTitle(),
 					discordMessage.getLink(),
-					tagList,
+					tagSet,
 					discordMessage.isModal(),
 					discordMessage.getDescription(),
 					discordUser,
@@ -85,14 +80,11 @@ public class DiscordController {
     }
 	
     @PostMapping("/addMessageFallback")	//It's a testing endpoint for the discord bot to see if it connects properly. (Basically just sending a response).
-    public String fallbackTest() {
+    public String fallback() {
         return ("Nothing added just returned that we recieved something.");
     }
 
     //Getter & Setters.
-	public DiscordMessageRepository getMessageRepo() {
-		return messageRepo;
-	}
 	public ItemRepository getItemRepo() {
 		return this.itemRepo;
 	}

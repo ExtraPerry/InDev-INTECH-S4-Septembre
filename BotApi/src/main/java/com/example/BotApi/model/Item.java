@@ -1,7 +1,7 @@
 package com.example.BotApi.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,11 +17,11 @@ public class Item {
 	@GeneratedValue
 	private int id;
 	//Attributes.
-	private String title;							//The title of the message. Gives an idea of what it is in one sentence or a few words.
+	private String name;							//The title of the message. Gives an idea of what it is in one sentence or a few words.
     private String link;							//The link that the message will contain.
     
     @ManyToMany
-    private List<Tag> tags = new ArrayList<Tag>();	//Association to tags existing in the database.
+    private Set<Tag> tags = new HashSet<Tag>();	//Association to tags existing in the database.
     
     private Boolean modal;							//A boolean to keep track of whether the message originated from a modal or a normal message that was caught.
     private String description;						//The description given by the user OR the content of the message if it wasn't a modal form.
@@ -32,13 +32,16 @@ public class Item {
     private String messageId;						//The id of the message in discord to which this is associated.
     private Long time;								//The time attribute should be in milliseconds as a Long value. This will help with keeping the data compatible between any type of language in theory.
 	
+    @ManyToMany
+    private Set<Category> categories = new HashSet<Category>();
+    
     //Constructor.
     public Item() {
     	
     }
     
-    public Item(final String title, final String link, final List<Tag> tags,final Boolean modal, final String description,final DiscordUser discordUser, final String messageId, final Long time) {
-    	this.setTitle(title);
+    public Item(final String name, final String link, final Set<Tag> tags,final Boolean modal, final String description,final DiscordUser discordUser, final String messageId, final Long time) {
+    	this.setName(name);
     	this.setLink(link);
     	this.setTags(tags);
     	this.setModal(modal);
@@ -49,11 +52,11 @@ public class Item {
     }
     
     //Getter & Setter.
-    public String getTitle() {
-		return title;
+    public String getName() {
+		return name;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getLink() {
 		return link;
@@ -61,10 +64,10 @@ public class Item {
 	public void setLink(String link) {
 		this.link = link;
 	}
-	public List<Tag> getTags() {
+	public Set<Tag> getTags() {
 		return this.tags;
 	}
-	private void setTags(List<Tag> tags) {
+	private void setTags(Set<Tag> tags) {
 		this.tags = tags;
 	}
 	public Boolean getModal() {
@@ -97,5 +100,43 @@ public class Item {
 	private void setTime(Long time) {
 		this.time = time;
 	}
+    public Set<Category> getCategories(){
+    	return this.categories;
+    }
+	
+	//Custom tags attribute.
+    public Tag findTag(String name) {
+    	for (Tag tag : this.getTags()) {
+    		if (tag.getName().equals(name)) {
+    			return tag;
+    		}
+    	}
+    	return null;
+    }
     
+	public void addTag(Tag tag) {
+		this.getTags().add(tag);
+	}
+	
+	public void removeTag(Tag tag) {
+		this.getTags().remove(tag);
+	}
+	
+	//Custom categories attribute.
+	public Category findCategory(String name) {
+    	for (Category category : this.getCategories()) {
+    		if (category.getName().equals(name)) {
+    			return category;
+    		}
+    	}
+    	return null;
+    }
+	
+	public void addCategory(Category category) {
+		this.getCategories().add(category);
+	}
+	
+	public void removeCategory(Category category) {
+		this.getCategories().remove(category);
+	}
 }

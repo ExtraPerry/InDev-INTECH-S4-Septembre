@@ -1,7 +1,7 @@
 package com.example.BotApi.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,8 +19,11 @@ public class Tag {
 	//Attributes.
 	private String name;
 	
-	@ManyToMany(mappedBy = "tags")
-	private List<Item> items = new ArrayList<Item>();
+	@ManyToMany(mappedBy = "tags")	//MappedBy relates to the variable name in the other class it is associated to.
+	private Set<Item> items = new HashSet<Item>();
+	
+	@ManyToMany(mappedBy = "tags")	//MappedBy relates to the variable name in the other class it is associated to.
+	private Set<Category> categories = new HashSet<Category>();
 	
 	//Constructor.
 	public Tag() {
@@ -38,10 +41,25 @@ public class Tag {
 	private void setName(String name) {
 		this.name = name;
 	}
-	public List<Item> getItems(){
+	public Set<Item> getItems(){
 		return this.items;
 	}
+	
+	//Custom items attribute.
+	public Item findItem(String name) {
+	    for (Item item : this.getItems()) {
+	    	if (item.getName().equals(name)) {
+	    		return item;
+	    	}
+	    }
+	    return null;
+	}
+		
 	public void addItem(Item item) {
 		this.getItems().add(item);
+	}
+	
+	public void removeItem(Item item) {
+		this.getItems().remove(item);
 	}
 }
