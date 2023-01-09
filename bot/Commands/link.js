@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } = require('discord.js');
-var Message = require('../Class/Message');
+var DiscordMessage = require('../Class/DiscordMessage');
 const postMessage = require('../Functions/postMessage');
 
 module.exports = {
@@ -123,7 +123,7 @@ module.exports = {
 		//Note Date.getTime() is time in ms since Jan 1, 1970, 00:00:00 UTC.
 		--- --- ---*/ 
 		
-		let message = new Message(title, link, tags, true, description, user.id, null, new Date().getUTCMilliseconds());
+		let message = new DiscordMessage(title, link, tags, true, description, user.tag, user.id, null, new Date().getUTCMilliseconds());
 		let json = JSON.stringify(message);
 		console.log(json);
 		try{

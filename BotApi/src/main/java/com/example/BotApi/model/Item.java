@@ -3,11 +3,13 @@ package com.example.BotApi.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
+@Entity
 public class Item {
 	
 	//DB id value attribute.
@@ -18,22 +20,27 @@ public class Item {
 	private String title;							//The title of the message. Gives an idea of what it is in one sentence or a few words.
     private String link;							//The link that the message will contain.
     
-    @ManyToMany(mappedBy = "Tags")
+    @ManyToMany
     private List<Tag> tags = new ArrayList<Tag>();	//Association to tags existing in the database.
     
     private Boolean modal;							//A boolean to keep track of whether the message originated from a modal or a normal message that was caught.
     private String description;						//The description given by the user OR the content of the message if it wasn't a modal form.
     
-    @OneToOne
+    @ManyToOne
     private DiscordUser discordUser;				//Association to users existing in the database.
     
     private String messageId;						//The id of the message in discord to which this is associated.
     private Long time;								//The time attribute should be in milliseconds as a Long value. This will help with keeping the data compatible between any type of language in theory.
 	
     //Constructor.
-    public Item(final String title, final String link, final Boolean modal, final String description,final DiscordUser discordUser, final String messageId, final Long time) {
+    public Item() {
+    	
+    }
+    
+    public Item(final String title, final String link, final List<Tag> tags,final Boolean modal, final String description,final DiscordUser discordUser, final String messageId, final Long time) {
     	this.setTitle(title);
     	this.setLink(link);
+    	this.setTags(tags);
     	this.setModal(modal);
     	this.setDescription(description);
     	this.setDiscordUser(discordUser);
@@ -53,6 +60,12 @@ public class Item {
 	}
 	public void setLink(String link) {
 		this.link = link;
+	}
+	public List<Tag> getTags() {
+		return this.tags;
+	}
+	private void setTags(List<Tag> tags) {
+		this.tags = tags;
 	}
 	public Boolean getModal() {
 		return modal;

@@ -6,8 +6,6 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 //Class.
@@ -21,15 +19,14 @@ public class Tag {
 	//Attributes.
 	private String name;
 	
-	@ManyToMany
-	@JoinTable(
-			name = "Tags",
-			joinColumns = @JoinColumn(name = "tag_id"),
-			inverseJoinColumns = @JoinColumn(name = "item_id")
-	)
-	private List<Item> Items = new ArrayList<Item>();
+	@ManyToMany(mappedBy = "tags")
+	private List<Item> items = new ArrayList<Item>();
 	
 	//Constructor.
+	public Tag() {
+		
+	}
+	
 	public Tag(final String name) {
 		this.setName(name);
 	}
@@ -42,6 +39,9 @@ public class Tag {
 		this.name = name;
 	}
 	public List<Item> getItems(){
-		return this.Items;
+		return this.items;
+	}
+	public void addItem(Item item) {
+		this.getItems().add(item);
 	}
 }
