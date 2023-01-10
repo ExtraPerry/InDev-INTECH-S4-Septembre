@@ -1,6 +1,6 @@
 {
-    "token":"Bot Token Here",
-    "clientId": "Bot ID Here",
-	"guildId": "Server ID Here",
-    "apiIP" : "http://localhost:8080"
+    "token":"MTAzNDA4NDUzNTQxNzE3NjA2NA.GXsE8S.wiZzl5BD7ZBO9FdWd35BkV8xDXjWw4SoXgSnk0",
+    "clientId": "1034084535417176064",
+	"guildId": "1034092037559046154",
+    "apiIP" : "http://localhost:5173"
 }

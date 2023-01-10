@@ -8,6 +8,9 @@
     <div class="cards"><p>je suis une carte</p></div>
     <div class="cards"><p>je suis une carte</p></div>
     <div class="cards"><p>je suis une carte</p></div>
+    <div class="cards"><p>je suis une carte</p></div>
+    <div class="cards"><p>je suis une carte</p></div>
+    <div class="cards"><p>je suis une carte</p></div>
   </div>
 </div>
  
