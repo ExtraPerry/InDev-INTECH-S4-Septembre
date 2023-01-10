@@ -32,6 +32,16 @@ public class DiscordController {
 	@PostMapping("/addMessage")	//Add a modal form report from the discord bot to the database.
     public String addMessage(@RequestBody DiscordMessage discordMessage) {
 		
+		//<-!!!->
+		//When creating a new tag or user and only when creating a new tag or user for the first time if two messages are received at aprox the same time.
+		//Then it will create a duplicate tag or user inside of the database.
+		//This won't happen though if the tag or user already exists inside of the database beforehand.
+		
+		//<-!!!->
+		//Also technically if a user sends the exact identical modal forms or message it'll make a new item regardless.
+		//A solution to this would be to have on startup or a routine check to find duplicate titles or links and refference them to a seperate list.
+		//Like that the admin on the website can decide on how to manage it.
+		
 		//Check if the discord user exists else make a new user. <----->
 		DiscordUser discordUser = this.findDiscordUserByUserId(this.getDiscordUserRepo().findAll(), discordMessage.getUserId());
 		if (discordUser == null) {	

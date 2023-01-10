@@ -8,17 +8,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
+@JsonIgnoreProperties({ "items" })	//To get the list of items a user owns and endpoint will have to be built for that.
 public class DiscordUser {
 	//DB id value attribute.
 	@Id
 	@GeneratedValue
 	private int id;
 	//Attributes.
-	private String name;								//NameTag of the discord user.
-	private String userId;								//UserId of the discord user.
+	private String name;							//NameTag of the discord user.
+	private String userId;							//UserId of the discord user.
 	
-	@OneToMany(mappedBy = "discordUser")	//MappedBy relates to the variable name in the other class it is associated to.
+	@OneToMany(mappedBy = "discordUser")			//MappedBy relates to the variable name in the other class it is associated to.							
 	private Set<Item> Items = new HashSet<Item>();	//Association to the items created by the discord user.
 
 	//Constructor.
@@ -32,6 +35,9 @@ public class DiscordUser {
 	}
 	
 	//Getter & Setter
+	public int getId() {
+    	return this.id;
+    }
 	public String getName() {
 		return name;
 	}

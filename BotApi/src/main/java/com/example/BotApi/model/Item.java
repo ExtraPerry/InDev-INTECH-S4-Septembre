@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+//Class.
 @Entity
 public class Item {
 	
@@ -21,19 +24,22 @@ public class Item {
     private String link;							//The link that the message will contain.
     
     @ManyToMany
-    private Set<Tag> tags = new HashSet<Tag>();	//Association to tags existing in the database.
+    @JsonManagedReference							//Item is the Parent of the Item_Tag relationship.
+    private Set<Tag> tags = new HashSet<Tag>();		//Association to tags existing in the database.
     
     private Boolean modal;							//A boolean to keep track of whether the message originated from a modal or a normal message that was caught.
     private String description;						//The description given by the user OR the content of the message if it wasn't a modal form.
     
     @ManyToOne
-    private DiscordUser discordUser;				//Association to users existing in the database.
+    @JsonManagedReference							//Item is the Parent of the Item_DiscordUser relationship.
+    private DiscordUser discordUser;				//Association to the user who made the message existing in the database.
     
     private String messageId;						//The id of the message in discord to which this is associated.
     private Long time;								//The time attribute should be in milliseconds as a Long value. This will help with keeping the data compatible between any type of language in theory.
 	
     @ManyToMany
-    private Set<Category> categories = new HashSet<Category>();
+    @JsonManagedReference							//Item is the Parent of the Item_Category relationship.
+    private Set<Category> categories = new HashSet<Category>();	//Association to categories existing in the database.
     
     //Constructor.
     public Item() {
@@ -52,6 +58,9 @@ public class Item {
     }
     
     //Getter & Setter.
+    public int getId() {
+    	return this.id;
+    }
     public String getName() {
 		return name;
 	}

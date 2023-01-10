@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 //Class.
 @Entity
 public class Tag {
@@ -20,9 +22,11 @@ public class Tag {
 	private String name;
 	
 	@ManyToMany(mappedBy = "tags")	//MappedBy relates to the variable name in the other class it is associated to.
+	@JsonBackReference				//Tag is the Child of the Item_Tag relationship.
 	private Set<Item> items = new HashSet<Item>();
 	
 	@ManyToMany(mappedBy = "tags")	//MappedBy relates to the variable name in the other class it is associated to.
+	@JsonBackReference				//Tag is the Child of the Category_Tag relationship.
 	private Set<Category> categories = new HashSet<Category>();
 	
 	//Constructor.
@@ -35,6 +39,9 @@ public class Tag {
 	}
 	
 	//Getter & Setter.
+	public int getId() {
+    	return this.id;
+    }
 	public String getName() {
 		return name;
 	}
