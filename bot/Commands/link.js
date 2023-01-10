@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } = require('discord.js');
+var DiscordMessage = require('../Class/DiscordMessage');
 const postMessage = require('../Functions/postMessage');
 
 module.exports = {
@@ -14,7 +15,7 @@ module.exports = {
 		
 		const modal = new ModalBuilder()
 			.setCustomId(interaction.commandName)		//customId should be the same name as the command.	
-			.setTitle('Link post form.');
+			.setTitle('Link post form.');				//Since we'll use this to call this CommandFile in order to handle the response.
 		
 		//Build the initial text zones.
 		const fields = {
@@ -31,7 +32,7 @@ module.exports = {
 				.setStyle(TextInputStyle.Short)
 				.setRequired(true),
 			
-			tags: new TextInputBuilder()		//Third input of text. The Tags of the post.
+			tags: new TextInputBuilder()		//Third input of text. The tags of the post.
 				.setCustomId('tags')
 				.setLabel('Tags. [Seperate with spaces]')
 				.setStyle(TextInputStyle.Paragraph)
@@ -73,7 +74,7 @@ module.exports = {
 		
 		const user = interaction.user;
 		
-		//Prepare text for the embed (if needed).
+		//Prepare text for the embed.
 		let embedTags = '';
 		for(const tag of tags){
 			if(embedTags !== '') embedTags += ' | ';
@@ -81,35 +82,76 @@ module.exports = {
 		}
 		
 		//Build an Embed for the user to see what they submitted.
-		const embed = new EmbedBuilder()
-			.setColor('Green')
-			.setAuthor({ name: `${user.username}`, iconURL: `${user.displayAvatarURL()}`})
-			.setThumbnail('https://s3-eu-west-1.amazonaws.com/assets.atout-on-line.com/images/ingenieur/Logos_Ecoles/2018_2021/intech_300.jpg')
-			.setTitle(link)
-			.setURL(link)
-			.setFields(
-				{ name: 'Title :', value: `${title}`},
-				{ name: 'Description :', value: `${description}`},
-				{ name: 'Tags :', value: `${embedTags}` } 
-			)
-			.setFooter({ text: 'In\'Dev', iconURL: 'https://cdn.discordapp.com/attachments/1027155649223729210/1047527511711563887/index.png' })
-			.setTimestamp();
-		
-		//Prepare text for the json (if needed).
-		let jsonTags = '';
-		for(const tag of tags){
-			if(jsonTags !== '') jsonTags += ', ';
-			jsonTags += `"${tag}"`;
+		let embed;
+		try{
+			embed = new EmbedBuilder()
+				.setColor('Green')
+				.setAuthor({ name: `In'Dev`, iconURL: `https://cdn.discordapp.com/attachments/1027155649223729210/1047527511711563887/index.png`})
+				.setThumbnail('https://s3-eu-west-1.amazonaws.com/assets.atout-on-line.com/images/ingenieur/Logos_Ecoles/2018_2021/intech_300.jpg')
+				.setTitle(link)
+				.setURL(link)
+				.setFields(
+					{ name: 'Title :', value: `${title}`},
+					{ name: 'Tags :', value: `${embedTags}` },
+					{ name: 'Description :', value: `${description}`}
+				)
+				.setFooter({ text: `${user.tag}`, iconURL: `${user.displayAvatarURL()}` })
+				.setTimestamp();
+		}catch(error){
+			console.error(error);
+			await interaction.reply({
+				embeds: [new EmbedBuilder()
+					.setColor('DarkRed')
+					.setDescription(`Something went wrong, maybe your URL link was invalid ?`)
+					],
+				ephemeral: true
+			});
+			return;
 		}
 		
 		//Build a JSON to send to the API.
-		const json = `{"title":"${title}","link":"${link}","tags":[${jsonTags}],"description":"${description}","userId":"${user.id}","timeStamp":"${Date()}"}`;
-		//Note Date.now() is time in ms since Jan 1, 1970, 00:00:00 UTC.
 		
+		/** --- --- ---
+		//Json written by hand here.
+		//Prepare text for the json.
+		let jsonTags = '';
+		for(const tag of tags){
+			if(jsonTags !== '') jsonTags += ',';
+			jsonTags += `"${tag}"`;
+		}
+		const json = `{"title":"${title}","link":"${link}","tags":[${jsonTags}],"description":"${description}","userId":"${user.id}","messageId":"${null}","timeStamp":"${new Date().getTime()}"}`;
+		//Note Date.getTime() is time in ms since Jan 1, 1970, 00:00:00 UTC.
+		--- --- ---*/ 
+		
+		let message = new DiscordMessage(title, link, tags, true, description, user.tag, user.id, null, new Date().getUTCMilliseconds());
+		let json = JSON.stringify(message);
 		console.log(json);
+		try{
+			postMessage(json); //Somehow still crashes the instance even though it should be caught by a try-catch . . .
+			//When the api is not able to recieve. 
+		}catch(error){
+			await interaction.reply({
+				embeds: [new EmbedBuilder()
+					.setColor('DarkRed')
+					.setDescription(`Unable to send the contents to the api.`)
+					],
+				ephemeral: true
+			});
+			return;
+		}
 		
 		//Send to user data retrived.
-		await interaction.reply({ embeds: [embed] });
+		await interaction.reply({
+			content: user.toString(),
+			embeds: [embed],
+			components: [],
+			ephemeral: false
+		})
+			.then( sent => {
+			console.log("<--->");
+			console.log(sent.id);
+			console.log("<--->");
+		});
 		
 	}
 }

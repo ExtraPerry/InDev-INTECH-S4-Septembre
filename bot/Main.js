@@ -5,9 +5,11 @@
  *      - W >>> Warning.
  *      - E >>> Error.
  */
+ 
+//npm modules ==> discord.js - fs - path - node-fetch
 
 //imports
-const { Client, GatewayIntentBits, Collection, Events } = require("discord.js");
+const { Client, GatewayIntentBits, Collection, Events, EmbedBuilder } = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 
@@ -71,7 +73,13 @@ client.on(Events.InteractionCreate, async interaction => {
         console.log(`In'DevR >>> Replied to ${interaction.user.id} for "${interaction.commandName}" Command.`);
 	} catch (error) {       //Return an error message if something went wrong.
 		console.error(error);
-		await interaction.reply({ content: 'There was an error while executing this command !', ephemeral: true });
+		await interaction.reply({
+			embeds: [new EmbedBuilder()
+			.setColor('DarkRed')
+			.setDescription('There was an error while executing this command !')
+			],
+			ephemeral: true
+		});
 	}
 });
 
@@ -92,6 +100,12 @@ client.on(Events.InteractionCreate, async interaction =>{
         console.log(`In'DevR >>> Replied to ${interaction.user.id} for "${interaction.customId}" ModalSubmit.`);
 	} catch (error) {       //Return an error message if something went wrong.
 		console.error(error);
-		await interaction.reply({ content: 'There was an error while responding to the form !', ephemeral: true });
+		await interaction.reply({
+			embeds: [new EmbedBuilder()
+			.setColor('DarkRed')
+			.setDescription('There was an error while executing this command !')
+			],
+			ephemeral: true
+		});
 	}
 });
