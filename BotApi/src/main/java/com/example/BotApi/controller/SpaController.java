@@ -32,6 +32,13 @@ public class SpaController {
 	public List<Item> getInitialItems(){
 		List<Item> items = this.getItemRepo().findAllByOrderByIdAsc();
 		
+		int itemsSize = items.size();
+		if (itemsSize <= 50) {	//if the total amount of items is lower than 50 just send the whole List.
+			return items;
+		}
+		
+		items = items.subList((itemsSize - 50) - 1, itemsSize - 1);
+		
 		return items;
 	}
 	@GetMapping("/getTags")
