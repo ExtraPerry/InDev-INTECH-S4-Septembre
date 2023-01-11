@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300&family=Roboto:wght@300&display=swap');
+*{
+    font-family: 'Roboto', sans-serif;
+}
 .admin{
 	height: 100vh;
 	width: 100%;
@@ -16,7 +20,6 @@ nav{
     display: flex;
     flex-direction: column;
     place-items: center;
-
     width: 100%;
     height: 100%;
 
@@ -38,13 +41,15 @@ nav{
 
 }
 .wall{
-    display: flex;
+    display: grid;
+    grid-template-columns: 23em 23em;
+    justify-items: center;
+    position: absolute;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 90%;
-    height: 100%;
+    /* width: auto; */
     background-color: #292b2f ;
-    justify-content: start;
+    justify-content: center;
     margin-top: 2%;
     border-radius: 15px;
 }

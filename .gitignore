@@ -66,3 +66,5 @@ target
 secrets.yml
 .gradletasknamecache
 .sts4-cache
+package.json
+package-lock.json
