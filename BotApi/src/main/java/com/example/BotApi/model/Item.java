@@ -64,49 +64,49 @@ public class Item {
     public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 	public String getLink() {
 		return link;
 	}
-	public void setLink(String link) {
+	public void setLink(final String link) {
 		this.link = link;
 	}
 	public Set<Tag> getTags() {
 		return this.tags;
 	}
-	private void setTags(Set<Tag> tags) {
+	private void setTags(final Set<Tag> tags) {
 		this.tags = tags;
 	}
 	public Boolean getModal() {
 		return modal;
 	}
-	public void setModal(Boolean modal) {
+	public void setModal(final Boolean modal) {
 		this.modal = modal;
 	}
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 	public DiscordUser getDiscordUser() {
 		return this.discordUser;
 	}
-	private void setDiscordUser(DiscordUser discordUser) {
+	private void setDiscordUser(final DiscordUser discordUser) {
 		this.discordUser = discordUser;
 	}
 	public String getMessageId() {
 		return messageId;
 	}
-	private void setMessageId(String messageId) {
+	private void setMessageId(final String messageId) {
 		this.messageId = messageId;
 	}
 	public Long getTime() {
 		return time;
 	}
-	private void setTime(Long time) {
+	private void setTime(final Long time) {
 		this.time = time;
 	}
     public Set<Category> getCategories(){
@@ -114,7 +114,7 @@ public class Item {
     }
 	
 	//Custom tags attribute.
-    public Tag findTag(String name) {
+    public Tag findTag(final String name) {
     	for (Tag tag : this.getTags()) {
     		if (tag.getName().equals(name)) {
     			return tag;
@@ -123,16 +123,16 @@ public class Item {
     	return null;
     }
     
-	public void addTag(Tag tag) {
+	public void addTag(final Tag tag) {
 		this.getTags().add(tag);
 	}
 	
-	public void removeTag(Tag tag) {
+	public void removeTag(final Tag tag) {
 		this.getTags().remove(tag);
 	}
 	
 	//Custom categories attribute.
-	public Category findCategory(String name) {
+	public Category findCategory(final String name) {
     	for (Category category : this.getCategories()) {
     		if (category.getName().equals(name)) {
     			return category;
@@ -141,11 +141,11 @@ public class Item {
     	return null;
     }
 	
-	public void addCategory(Category category) {
+	public void addCategory(final Category category) {
 		this.getCategories().add(category);
 	}
 	
-	public void removeCategory(Category category) {
+	public void removeCategory(final Category category) {
 		this.getCategories().remove(category);
 	}
 }

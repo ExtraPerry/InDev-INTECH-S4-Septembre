@@ -1,9 +1,9 @@
 package com.example.BotApi.controller;
 
-import com.example.BotApi.model.DiscordMessage;
 import com.example.BotApi.model.DiscordUser;
 import com.example.BotApi.model.Item;
 import com.example.BotApi.model.Tag;
+import com.example.BotApi.model.Contract.DiscordMessage;
 import com.example.BotApi.repository.DiscordUserRepository;
 import com.example.BotApi.repository.ItemRepository;
 import com.example.BotApi.repository.TagRepository;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DiscordController {
 	
 	//Attributes.
-	@Autowired	//Assign to the database.
+	@Autowired
 	private ItemRepository itemRepo;
 	@Autowired
 	private TagRepository tagRepo;
@@ -30,7 +30,7 @@ public class DiscordController {
 	
 	//Endpoints.
 	@PostMapping("/addMessage")	//Add a modal form report from the discord bot to the database.
-    public String addMessage(@RequestBody DiscordMessage discordMessage) {
+    public String addMessage(@RequestBody final DiscordMessage discordMessage) {
 		
 		//<-!!!->
 		//When creating a new tag or user and only when creating a new tag or user for the first time if two messages are received at aprox the same time.

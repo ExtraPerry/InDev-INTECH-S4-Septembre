@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -21,7 +22,8 @@ public class DiscordUser {
 	private String name;							//NameTag of the discord user.
 	private String userId;							//UserId of the discord user.
 	
-	@OneToMany(mappedBy = "discordUser")			//MappedBy relates to the variable name in the other class it is associated to.							
+	@OneToMany(mappedBy = "discordUser")			//MappedBy relates to the variable name in the other class it is associated to.
+	@JsonBackReference								//DiscordUser is the Child of the Item_DiscordUser relationship.
 	private Set<Item> Items = new HashSet<Item>();	//Association to the items created by the discord user.
 
 	//Constructor.
@@ -41,13 +43,13 @@ public class DiscordUser {
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 	public String getUserId() {
 		return userId;
 	}
-	public void setUserId(String userId) {
+	public void setUserId(final String userId) {
 		this.userId = userId;
 	}
 	public Set<Item> getItems(){
@@ -55,7 +57,7 @@ public class DiscordUser {
 	}
 	
 	//Custom items attribute.
-	public Item findItem(String name) {
+	public Item findItem(final String name) {
 	    for (Item item : this.getItems()) {
 	    	if (item.getName().equals(name)) {
 	    		return item;
@@ -64,11 +66,11 @@ public class DiscordUser {
 	    return null;
 	}
 		
-	public void addItem(Item item) {
+	public void addItem(final Item item) {
 		this.getItems().add(item);
 	}
 	
-	public void removeItem(Item item) {
+	public void removeItem(final Item item) {
 		this.getItems().remove(item);
 	}
 	

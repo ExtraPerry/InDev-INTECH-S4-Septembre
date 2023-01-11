@@ -1,19 +1,10 @@
-package com.example.BotApi.model;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+package com.example.BotApi.model.Contract;
 
 import java.util.Date;
 
 //Class.
-@Entity
 public class DiscordMessage {
 	
-	//DB id value attribute.
-	@Id
-	@GeneratedValue
-	private int id;
 	//Attributes.
     private String title;		//The title of the message. Gives an idea of what it is in one sentence or a few words.
     private String link;		//The link that the message will contain.
@@ -43,9 +34,6 @@ public class DiscordMessage {
     }
     
     //Getter & Setters.
-    public int getId() {
-    	return id;
-    }
 	public String getTitle() {
 		return title;
 	}
