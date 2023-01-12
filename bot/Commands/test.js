@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 var DiscordMessage = require('../Class/DiscordMessage');
+var PageFormat = require('../Class/PageFormat');
 const postMessage = require('../Functions/postMessage');
 var randomWords = require('random-words');
 
@@ -117,7 +118,7 @@ module.exports = {
 		await interaction.reply({
 				embeds: [new EmbedBuilder()
 					.setColor('Green')
-					.setDescription(`Content sent to the api successfully.`)
+					.setDescription(`Use "http://localhost:8080/getItemsPage" and use ${JSON.stringify(new PageFormat(0, 50, "id"))} inside the body.`)
 					],
 				ephemeral: true
 			});
