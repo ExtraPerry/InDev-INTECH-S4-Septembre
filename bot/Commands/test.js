@@ -78,7 +78,7 @@ module.exports = {
 		let nbMessages = Math.floor(Math.random() * 542) + 1;
 		
 		//Builde the messages.
-		let timeout = 100;
+		let timeout = 0;
 		
 		for(let i = 1; i < nbMessages; i++){
 			let linkIndex = Math.floor(Math.random() * linkList.length) + 1;
@@ -106,7 +106,7 @@ module.exports = {
   				// Something you want delayed.
             	postMessage(JSON.stringify(message));
 				}, timeout); // How long you want the delay to be, measured in milliseconds.
-				timeout += 100;
+				timeout += 200;
 				
 			}catch(error){	//Return if an error happens.
 				console.error('oops');

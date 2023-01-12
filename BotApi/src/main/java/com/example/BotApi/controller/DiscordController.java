@@ -56,6 +56,7 @@ public class DiscordController {
 		//Check if each tag in the list exists else make a new tag for the list if needed.	<----->
 		Set<Tag> tagSet = new HashSet<Tag>();
 		for (String messageTag : discordMessage.getTags()) {
+			messageTag.toLowerCase();
 			//Check if tag exists.
 			Tag tag = this.findTagByName(this.getTagRepo().findAll(), messageTag);
 			if (tag == null) {
