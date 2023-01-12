@@ -99,6 +99,7 @@ module.exports = {
 				randomWords({min: 10, max: 15, join: ' '}),
 				user.tag,
 				user.id,
+				null,
 				new Date().getUTCMilliseconds()
 			);
 			
@@ -110,7 +111,7 @@ module.exports = {
 				timeout += 200;
 				
 			}catch(error){	//Return if an error happens.
-				console.error('oops');
+				console.error('Something failed while processing the test.js command.');
 			}
 		}
 		
@@ -118,7 +119,9 @@ module.exports = {
 		await interaction.reply({
 				embeds: [new EmbedBuilder()
 					.setColor('Green')
-					.setDescription(`Use "http://localhost:8080/getItemsPage" and use ${JSON.stringify(new PageFormat(0, 50, "id"))} inside the body.`)
+					.setTitle('Content sent to the api successfully.')
+					.setThumbnail('https://s3-eu-west-1.amazonaws.com/assets.atout-on-line.com/images/ingenieur/Logos_Ecoles/2018_2021/intech_300.jpg')
+					.setDescription(`Use http://localhost:8080/getItemsPage and use ${JSON.stringify(new PageFormat(0, 50, "id"))} inside the body. Then change the page number to retrieve more.`)
 					],
 				ephemeral: true
 			});
