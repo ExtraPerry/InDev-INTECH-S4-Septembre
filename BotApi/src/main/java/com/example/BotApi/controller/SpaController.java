@@ -59,9 +59,6 @@ public class SpaController {
 	private ItemRepository getItemRepo() {
 		return this.itemRepo;
 	}
-	private List<Item> getItemRepoSorted(){
-		return this.getItemRepo().findAllByOrderByIdAsc();
-	}
 	private TagRepository getTagRepo() {
 		return this.tagRepo;
 	}
@@ -73,17 +70,5 @@ public class SpaController {
 	}
 	
 	//Custom functions.
-	private List<Item> getTop50FromItems(List<Item> items){	//Note must be sorted list from "this.getItemRepoSorted()" function.
-		//Get the size of the list
-		int itemsSize = items.size();
-		//if the total amount of items is lower than 50 just send the whole List.
-		if (itemsSize <= 50) {
-			return items;
-		}
-		//if the total amount is higher than 50 then parse it down to a size of 50.
-		items = items.subList((itemsSize - 50) - 1, itemsSize - 1);
-		//Then send the new list back.
-		return items;
-	}
 	
 }
