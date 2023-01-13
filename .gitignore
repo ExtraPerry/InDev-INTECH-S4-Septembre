@@ -24,12 +24,7 @@ npm-debug.log*
 *.iws
 *.jar
 *.sw?
-<<<<<<< HEAD
 bot/config.json
-=======
-<<<<<<< HEAD
-bot/config.json
-=======
 *~
 .#*
 .*.md.html
