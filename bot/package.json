@@ -5,6 +5,7 @@
     "node-fetch": "^3.3.0",
     "path": "^0.12.7",
     "pg": "^8.8.0",
+    "random-words": "^1.2.1",
     "sequelize": "^6.25.3"
   },
   "name": "bot_test",

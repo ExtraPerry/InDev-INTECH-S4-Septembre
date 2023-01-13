@@ -6,7 +6,7 @@
  *      - E >>> Error.
  */
  
-//npm modules ==> discord.js - fs - path - node-fetch
+//npm modules ==> discord.js - fs - path - node-fetch - random-words
 
 //imports
 const { Client, GatewayIntentBits, Collection, Events, EmbedBuilder } = require("discord.js");

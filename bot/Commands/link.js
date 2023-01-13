@@ -24,6 +24,8 @@ module.exports = {
 				.setCustomId('title')
 				.setLabel('Title of the post.')
 				.setStyle(TextInputStyle.Short)
+				.setMinLength(10)
+				.setMaxLength(60)
 				.setRequired(true),
 		
 			link: new TextInputBuilder()		//Second input of text. The link of the post.
@@ -110,19 +112,6 @@ module.exports = {
 		}
 		
 		//Build a JSON to send to the API.
-		
-		/** --- --- ---
-		//Json written by hand here.
-		//Prepare text for the json.
-		let jsonTags = '';
-		for(const tag of tags){
-			if(jsonTags !== '') jsonTags += ',';
-			jsonTags += `"${tag}"`;
-		}
-		const json = `{"title":"${title}","link":"${link}","tags":[${jsonTags}],"description":"${description}","userId":"${user.id}","messageId":"${null}","timeStamp":"${new Date().getTime()}"}`;
-		//Note Date.getTime() is time in ms since Jan 1, 1970, 00:00:00 UTC.
-		--- --- ---*/ 
-		
 		let message = new DiscordMessage(title, link, tags, true, description, user.tag, user.id, null, new Date().getUTCMilliseconds());
 		let json = JSON.stringify(message);
 		console.log(json);

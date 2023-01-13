@@ -1,6 +1,8 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 var DiscordMessage = require('../Class/DiscordMessage');
+var PageFormat = require('../Class/PageFormat');
 const postMessage = require('../Functions/postMessage');
+var randomWords = require('random-words');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -11,60 +13,112 @@ module.exports = {
 	//What should be done if the interaction was a Command by a user in chat input.
 	async execute(interaction) {
 		//The link.
-		let link = "https://www.youtube.com/watch?v=POC_npeyL2k";
+		let linkList = [
+			"https://www.youtube.com/watch?v=POC_npeyL2k",
+			"https://www.youtube.com/watch?v=zfbe76IFxD8",
+			"https://www.youtube.com/watch?v=POC_npeyL2k",
+			"https://www.youtube.com/watch?v=9Ga30AoIh8o",
+			"https://www.youtube.com/watch?v=pJrbpTVfJr8",
+			"https://www.youtube.com/watch?v=3UHwENNWcNE",
+			"https://www.youtube.com/watch?v=flZjvWKz_WE",
+			"https://www.youtube.com/watch?v=5fp_pnhKPMY",
+			"https://www.youtube.com/shorts/1kqJonG_lt4",
+			"https://www.google.com",
+			"https://spring.io/projects/spring-boot",
+			"https://www.java.com",
+			"https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javadoc.html",
+			"https://developer.mozilla.org/fr/docs/Web/JavaScript",
+			"https://nodejs.org",
+			"https://vitejs.dev/",
+			"https://www.youtube.com",
+			"https://discord.com/developers/docs/intro",
+			"https://discord.js.org/#/docs/discord.js/main/general/welcome",
+			
+		];
 		
 		//The tags.
-		let tagListOne = ["intech","indev"];
-		let tagListTwo = ["youtube", "indev"];
-		let tagListThree = ["intech", "merp", "youtube"];
-		let tagListFour = ["tytolis", "merp", "indev", "youtube", "indev"];
+		let tagList = [
+			"intech",
+			"indev",
+			"youtube",
+			"merp",
+			"java",
+			"fr",
+			"en",
+			"vr",
+			"free",
+			"suchi",
+			"chat",
+			"chien",
+			"serpent",
+			"sergal",
+			"ingenieur",
+			"javascript",
+			"springboot",
+			"jpa",
+			"sql",
+			"mariadb",
+			"pc",
+			"laptop",
+			"telephone",
+			"console",
+			"table",
+			"chaise",
+			"bureau",
+			"projecteur",
+			"tablet",
+			"oop",
+			"script",
+			"fin"
+		];
 		
 		//the user that did the command.
 		let user = interaction.user;
 		
-		//Builde the messages.
-		let messageOne = new DiscordMessage("First", link, tagListOne, false, "First one.", user.tag, user.id, null, new Date().getUTCMilliseconds());
-		let messageTwo = new DiscordMessage("Second", link, tagListTwo, false,"Second one.", user.tag, user.id, null, new Date().getUTCMilliseconds());
-		let messageThree = new DiscordMessage("Third", link, tagListThree, false, "Third one.", user.tag, user.id, null, new Date().getUTCMilliseconds());
-		let messageFour = new DiscordMessage("Fourth", link, tagListFour, false, "Fourth one.", user.tag, user.id, null, new Date().getUTCMilliseconds());
+		//Create random numbers.
+		let nbMessages = Math.floor(Math.random() * 542) + 1;
 		
-		try{	//Sent predetermined messages to the api.
-			setTimeout(function (){
-  			// Something you want delayed.
-            postMessage(JSON.stringify(messageOne));
-			}, 1000); // How long you want the delay to be, measured in milliseconds.
+		//Builde the messages.
+		let timeout = 0;
+		
+		for(let i = 1; i < nbMessages; i++){
+			let linkIndex = Math.floor(Math.random() * linkList.length) + 1;
+			let nbTags = Math.floor(Math.random() * 6) + 1;
 			
-			setTimeout(function (){
-  			// Something you want delayed.
-            postMessage(JSON.stringify(messageTwo));
-			}, 2000); // How long you want the delay to be, measured in milliseconds.
+			let tempTags = [];
+			for(let i = 0; i < nbTags; i++){
+				let randomTag = Math.floor(Math.random() * tagList.length) + 1;
+				tempTags[i] = tagList[randomTag - 1];
+			}
 			
-			setTimeout(function (){
-  			// Something you want delayed.
-            postMessage(JSON.stringify(messageThree));
-			}, 3000); // How long you want the delay to be, measured in milliseconds.
+			let message = new DiscordMessage(
+				randomWords({min: 1, max: 5, join: ' '}),
+				linkList[linkIndex - 1],
+				tempTags,
+				false,
+				randomWords({min: 10, max: 15, join: ' '}),
+				user.tag,
+				user.id,
+				new Date().getUTCMilliseconds()
+			);
 			
-			setTimeout(function (){
-  			// Something you want delayed.
-            postMessage(JSON.stringify(messageFour));
-			}, 4000); // How long you want the delay to be, measured in milliseconds.
-			
-		}catch(error){	//Return this to the user if something went wrong while sending to the api.
-			await interaction.reply({
-				embeds: [new EmbedBuilder()
-					.setColor('DarkRed')
-					.setDescription(`Unable to send the contents to the api.`)
-					],
-				ephemeral: true
-			});
-			return;
+			try{
+				setTimeout(function (){
+  				// Something you want delayed.
+            	postMessage(JSON.stringify(message));
+				}, timeout); // How long you want the delay to be, measured in milliseconds.
+				timeout += 200;
+				
+			}catch(error){	//Return if an error happens.
+				console.error('oops');
+			}
 		}
 		
 		//If everything went correctly send a confirmation message.
 		await interaction.reply({
 				embeds: [new EmbedBuilder()
 					.setColor('Green')
-					.setDescription(`Content sent to the api successfully.`)
+					.setDescription(`Use "http://localhost:8080/getItemsPage" and use ${JSON.stringify(new PageFormat(0, 50, "id"))} inside the body.`)
 					],
 				ephemeral: true
 			});

@@ -46,7 +46,7 @@ public class Category {
 	public String getName() {
 		return name;
 	}
-	private void setName(String name) {
+	private void setName(final String name) {
 		this.name = name;
 	}
 	public Set<Item> getItems(){
@@ -54,7 +54,7 @@ public class Category {
 	}
 		
 	//Custom items attribute.
-	public Item findItem(String name) {
+	public Item findItem(final String name) {
 	    for (Item item : this.getItems()) {
 	    	if (item.getName().equals(name)) {
 	    		return item;
@@ -63,11 +63,11 @@ public class Category {
 	    return null;
 	}
 		
-	public void addItem(Item item) {
+	public void addItem(final Item item) {
 		this.getItems().add(item);
 	}
 	
-	public void removeItem(Item item) {
+	public void removeItem(final Item item) {
 		this.getItems().remove(item);
 	}
 }
