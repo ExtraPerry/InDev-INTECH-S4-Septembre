@@ -77,24 +77,8 @@ public class SpaController {
 		//Check if the tags in the query exist in the database and retrieve them if so.
 		String[] tagNames = params.get("q").split(" ");
 		Set<Tag> queriedTags = new HashSet<Tag>();
-		
-		//Debugging
-		System.out.println("-------");
-		System.out.println(params.get("q"));
-		System.out.println("-------");
-		System.out.println(tagNames.toString());
-		System.out.println("-------");
-		for(String text : tagNames) {
-			System.out.println(text);
-		}
-		
 		for(String tagName : tagNames) {	//For each query check if the tag exists.
 			Tag tag = this.findTagByName(this.getTagRepo().findAll(), tagName);
-			
-			//Debugging
-			System.out.println("-------");
-			System.out.println(tagName + " ?= " + tag);
-			
 			if (tag  != null) {	//If the tag exists add it to the list.
 					queriedTags.add(tag);
 			} else {	//If the tag does not exist return the string.
