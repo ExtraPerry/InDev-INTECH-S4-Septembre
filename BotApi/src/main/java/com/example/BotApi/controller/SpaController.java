@@ -7,8 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +35,7 @@ public class SpaController {
 	private DiscordUserRepository discordUserRepo;
 	
 	//Endpoints.
+	@CrossOrigin(origins = "http://127.0.0.1:5173/")
 	@GetMapping("/getItemsPage")	//This will be used to get an infinite scrolling page by requesting it in portions at a time.
 	public Object getItemPage(@RequestParam final Map<String, String> params){
 		//Check if the request parameters are valid. if not return the string. If they are the check string is null.

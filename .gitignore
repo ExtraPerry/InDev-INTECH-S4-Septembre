@@ -63,3 +63,4 @@ secrets.yml
 .sts4-cache
 package.json
 package-lock.json
+bot/node_modules/.package-lock.json
