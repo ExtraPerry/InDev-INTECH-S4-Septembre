@@ -1,29 +1,30 @@
 <script setup>
 import card from '../components/card.vue';
-import { ref } from 'vue';
-// import { getInitialItems } from "../../../bot/Functions/getInitialItems";
-
+import { ref, onMounted, watch } from 'vue';
+import { useInitialItems } from "../stores/initialItems";
 const siteTitle = ref('Titre');
-const initialItems = ref([]);
+const initialItems = useInitialItems();
+let items = ref('');
 
-async function getInitialItems() {
-  const url = (
-    'http://localhost:8080/getItemsPage?page=0&size=10&sort=id'
-  );
+onMounted(async () => {
+  await initialItems.getInitialItems();
+  items = initialItems.items
 
-  const result = await fetch(url)
-    .then(response => response.json());
+  console.log('SSSS',items);
+})
+watch(items, async (newQuestion, oldQuestion) => {
+  console.log('SSSS',newQuestion,  oldQuestion);
 
-  console.log('Fetched from: ' + url);
-  console.log(result);
-}
+})
+
 
 </script>
 
 <template>
 <div class="home">
   <div class="wall">
-    <button @click="getInitialItems">getItems</button>
+    QQQQ {{ initialItems.items }}
+    <button @click="initialItems.getInitialItems">getItems</button>
     <card :siteTitle= siteTitle />
     <card></card>
     <card></card>
