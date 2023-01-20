@@ -65,7 +65,7 @@ public class SpaController {
 		return this.getItemRepo().findAll(sortedBy);
 	}
 	
-	
+	//There is no point in searching by Id since the client does not always know all the tags that exist.
 	@GetMapping("/getTagsPage")		//This will get a list of items matching queried tags.
 	public Object getTags(@RequestParam final Map<String, String> params){
 		
@@ -86,31 +86,45 @@ public class SpaController {
 			}
 		}
 		
-		//Find the tag with the smallest list of items to simplify the search.
-		Tag smallestTag = null;
-		for(Tag tag : queriedTags) {	//We are searching for the tag with the smallest amount of items it relates to.
-			if (smallestTag != null) {	//Check if there is a tag considered smallest if not then add the tag.
-				if (smallestTag.getItems().size() > tag.getItems().size()) {	//Check if current tag is smaller than previous tag.
-					smallestTag = tag;	//If current tag is smaller assign it to smallestTag.
-				}
-			} else {
-				smallestTag = tag;		//If there is no smallest tag assign current tag.
-			}
-		}
-		
-		//Compare all tags to the list of the smallest tag. To make a results Set.
+		//Check amount of tags.
 		Set<Item> results = new HashSet<Item>();
-		boolean tagsCheck = true;
-		for(Item item : smallestTag.getItems()) {	//Verify all items of the list.
-			tagsCheck = true;
-			for(Tag tag : queriedTags) {	//Verify if the item contains the queried tags.
-				if (!item.getTags().contains(tag)) {	//If it does not break and ignore the item. (tagsCheck = false).
-					tagsCheck = false;
-					break;
+		switch(queriedTags.size()) {
+		//If there are no tags respond accordingly.
+		case 0:
+			return "There are no tags to compare too.";
+		//If there is only one tag don't bother inter-match and return the item set of the tag.
+		case 1:
+			for (Tag tag : queriedTags) {
+				results = tag.getItems();
+			}
+			break;
+		//If there are multiple tags then inter-match the sets to make a new one with items containing all queried tags.
+		default:
+			//Find the tag with the smallest list of items to simplify the search.
+			Tag smallestTag = null;
+			for(Tag tag : queriedTags) {	//We are searching for the tag with the smallest amount of items it relates to.
+				if (smallestTag != null) {	//Check if there is a tag considered smallest if not then add the tag.
+					if (smallestTag.getItems().size() > tag.getItems().size()) {	//Check if current tag is smaller than previous tag.
+						smallestTag = tag;	//If current tag is smaller assign it to smallestTag.
+					}
+				} else {
+					smallestTag = tag;		//If there is no smallest tag assign current tag.
 				}
 			}
-			if (tagsCheck) {	//If tagsCheck = false then it implies the item does not meet criteria so must be ignored.
-				results.add(item);	//If it does meet criteria add it the the results.
+			
+			//Compare all tags to the list of the smallest tag. To make a results Set.
+			boolean tagsCheck = true;
+			for(Item item : smallestTag.getItems()) {	//Verify all items of the list.
+				tagsCheck = true;
+				for(Tag tag : queriedTags) {	//Verify if the item contains the queried tags.
+					if (!item.getTags().contains(tag)) {	//If it does not break and ignore the item. (tagsCheck = false).
+						tagsCheck = false;
+						break;
+					}
+				}
+				if (tagsCheck) {	//If tagsCheck = false then it implies the item does not meet criteria so must be ignored.
+					results.add(item);	//If it does meet criteria add it the the results.
+				}
 			}
 		}
 		
