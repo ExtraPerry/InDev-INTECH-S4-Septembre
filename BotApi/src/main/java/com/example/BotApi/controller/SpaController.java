@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.BotApi.model.Category;
 import com.example.BotApi.model.Item;
 import com.example.BotApi.model.Tag;
+import com.example.BotApi.model.Contract.PageFormat;
 import com.example.BotApi.repository.CategoryRepository;
 import com.example.BotApi.repository.DiscordUserRepository;
 import com.example.BotApi.repository.ItemRepository;
@@ -44,34 +45,31 @@ public class SpaController {
 			return "Parameters are not valid. Must include [page, size and sort].";
 		}
 		
-		//Check & Convert to an integer the String value of the page & size parameter.
-		int page;
-		int size;
-		try {
-			page = Integer.parseInt(params.get("page"));
-			size = Integer.parseInt(params.get("size"));
-		}catch(NumberFormatException error) {
-			return "Page or Size was not a valid number. Must be an integer.";
-		}		
-		
-		//Check if the sort string is a valid authorized one.
-		String sort = params.get("sort");
-		if (!(sort.equals("id") || sort.equals("name") || sort.equals("discordUser") || sort.equals("time"))) {
-			return "Sort value is not valid. Try [id, name, discordUser or time].";
+		//Check the pageFormat parameter values.
+		PageFormat pageFormat = this.checkPageableParams(params);
+		if (pageFormat == null) {
+			return "Paging parameter values were incorrect. Page & Size should be integer. Sort should be a string and be named properly.";
 		}
 		
 		//If the parameters are correct then retrieve the asked data.
-		Pageable sortedBy = PageRequest.of(page, size, Sort.by(sort));
+		Pageable sortedBy = PageRequest.of(pageFormat.getPage(), pageFormat.getSize(), Sort.by(pageFormat.getSort()));
 		return this.getItemRepo().findAll(sortedBy);
 	}
 	
 	//There is no point in searching by Id since the client does not always know all the tags that exist.
+	//Will returns matching items containing the listed tags if they have one or more. So an OR condition not AND for the search.
 	@GetMapping("/getTagsPage")		//This will get a list of items matching queried tags.
 	public Object getTags(@RequestParam final Map<String, String> params){
 		
 		//Check if the request parameters are valid. if not return the string.
-		if (!params.containsKey("q")) {
-			return "Parameters are not valid. Must include [q].";
+		if (!(params.containsKey("q") && params.containsKey("page") && params.containsKey("size") && params.containsKey("sort"))) {
+			return "Parameters are not valid. Must include [q, page, size and sort].";
+		}
+		
+		//Check the pageFormat parameter values.
+		PageFormat pageFormat = this.checkPageableParams(params);
+		if (pageFormat == null) {
+			return "Paging parameter values were incorrect. Page & Size should be integer. Sort should be a string named [id, name, discordUser or time].";
 		}
 		
 		//Check if the tags in the query exist in the database and retrieve them if so.
@@ -86,50 +84,8 @@ public class SpaController {
 			}
 		}
 		
-		//Check amount of tags.
-		Set<Item> results = new HashSet<Item>();
-		switch(queriedTags.size()) {
-		//If there are no tags respond accordingly.
-		case 0:
-			return "There are no tags to compare too.";
-		//If there is only one tag don't bother inter-match and return the item set of the tag.
-		case 1:
-			for (Tag tag : queriedTags) {
-				results = tag.getItems();
-			}
-			break;
-		//If there are multiple tags then inter-match the sets to make a new one with items containing all queried tags.
-		default:
-			//Find the tag with the smallest list of items to simplify the search.
-			Tag smallestTag = null;
-			for(Tag tag : queriedTags) {	//We are searching for the tag with the smallest amount of items it relates to.
-				if (smallestTag != null) {	//Check if there is a tag considered smallest if not then add the tag.
-					if (smallestTag.getItems().size() > tag.getItems().size()) {	//Check if current tag is smaller than previous tag.
-						smallestTag = tag;	//If current tag is smaller assign it to smallestTag.
-					}
-				} else {
-					smallestTag = tag;		//If there is no smallest tag assign current tag.
-				}
-			}
-			
-			//Compare all tags to the list of the smallest tag. To make a results Set.
-			boolean tagsCheck = true;
-			for(Item item : smallestTag.getItems()) {	//Verify all items of the list.
-				tagsCheck = true;
-				for(Tag tag : queriedTags) {	//Verify if the item contains the queried tags.
-					if (!item.getTags().contains(tag)) {	//If it does not break and ignore the item. (tagsCheck = false).
-						tagsCheck = false;
-						break;
-					}
-				}
-				if (tagsCheck) {	//If tagsCheck = false then it implies the item does not meet criteria so must be ignored.
-					results.add(item);	//If it does meet criteria add it the the results.
-				}
-			}
-		}
-		
 		//If everything checks out then return the results. If there were no results return an empty Set.
-		return results;
+		return this.getItemRepo().findAllByTagsIn(queriedTags, PageRequest.of(pageFormat.getPage(), pageFormat.getSize(), Sort.by(pageFormat.getSort())));
 	}
 	
 	
@@ -170,5 +126,29 @@ public class SpaController {
 			}
 		}
 		return null;
+	}
+	
+	private PageFormat checkPageableParams(final Map<String, String> params) {
+		//Check & Convert to an integer the String value of the page & size parameter.
+		int page;
+		int size;
+		try {
+			page = Integer.parseInt(params.get("page"));
+			size = Integer.parseInt(params.get("size"));
+		}catch(NumberFormatException error) {
+			//return "Page or Size was not a valid number. Must be an integer.";
+			return null;
+		}		
+		
+		//Check if the sort string is a valid authorized one.
+		String sort = params.get("sort");
+		if (!(sort.equals("id") || sort.equals("name") || sort.equals("discordUser") || sort.equals("time"))) {
+			//return "Sort value is not valid. Try [id, name, discordUser or time].";
+			return null;
+		}
+		
+		//If all check out return a PageFormat.
+		return new PageFormat(page, size, sort);
+
 	}
 }
