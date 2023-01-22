@@ -1,7 +1,5 @@
 package com.example.BotApi.model.Contract;
 
-import com.example.BotApi.repository.ItemRepository;
-
 //Class.
 public class PageFormat {
 	
@@ -13,6 +11,11 @@ public class PageFormat {
 	//Constructors.
 	public PageFormat() {
 		
+	}
+	public PageFormat(final int page, final int size) {
+		this.setPage(page);
+		this.setSize(size);
+		this.setSort(null);
 	}
 	public PageFormat(final int page, final int size, final String sort) {
 		this.setPage(page);

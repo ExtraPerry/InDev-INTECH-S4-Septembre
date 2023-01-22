@@ -14,4 +14,6 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	public List<Item> findAllByOrderByIdAsc();
 	
 	public Page<Item> findAllByTagsIn(Set<Tag> tags, Pageable pageable);
+	
+	public Page<Item> findByName(String name, Pageable pageable);
 }
