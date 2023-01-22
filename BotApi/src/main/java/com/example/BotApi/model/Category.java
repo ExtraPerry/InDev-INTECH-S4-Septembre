@@ -34,7 +34,7 @@ public class Category {
 		
 	//Constructor.
 	public Category() {
-			
+		
 	}
 		
 	public Category(final String name) {

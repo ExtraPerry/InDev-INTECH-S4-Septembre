@@ -6,4 +6,5 @@ import com.example.BotApi.model.DiscordUser;
 
 public interface DiscordUserRepository extends JpaRepository<DiscordUser, Integer> {
 
+	public DiscordUser findByuserId(String userId);
 }
