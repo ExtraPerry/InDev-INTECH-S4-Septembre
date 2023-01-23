@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.BotApi.function.ParameterCheck;
 import com.example.BotApi.model.Category;
 import com.example.BotApi.model.DiscordUser;
 import com.example.BotApi.model.Item;
 import com.example.BotApi.model.Tag;
-import com.example.BotApi.model.Contract.Check;
 import com.example.BotApi.model.Contract.PageFormat;
 import com.example.BotApi.repository.CategoryRepository;
 import com.example.BotApi.repository.DiscordUserRepository;
@@ -46,7 +46,7 @@ public class SpaController {
 	public ResponseEntity<?> getItemPage(@RequestParam final Map<String, String> params){
 		
 		//Check the pageFormat parameter values.
-		PageFormat pageFormat = Check.checkPageableParams(params,"pageable", "item");
+		PageFormat pageFormat = ParameterCheck.checkPageable(params,"pageable", "item");
 		if (pageFormat.isError()) {
 			return pageFormat.getResponse();
 		}
@@ -67,7 +67,7 @@ public class SpaController {
 	public ResponseEntity<?> getTagsById(@RequestParam final Map<String, String> params){
 		
 		//Check the pageFormat parameter values.
-		PageFormat pageFormat = Check.checkPageableParams(params,"pageable", "tag");
+		PageFormat pageFormat = ParameterCheck.checkPageable(params,"pageable", "tag");
 		if (pageFormat.isError()) {
 			return pageFormat.getResponse();
 		}
@@ -89,7 +89,7 @@ public class SpaController {
 	public ResponseEntity<?> getCategoryPage(@RequestParam final Map<String, String> params){
 		
 		//Check the pageFormat parameter values.
-		PageFormat pageFormat = Check.checkPageableParams(params,"pageable", "category");
+		PageFormat pageFormat = ParameterCheck.checkPageable(params,"pageable", "category");
 		if (pageFormat.isError()) {
 			return pageFormat.getResponse();
 		}
@@ -111,7 +111,7 @@ public class SpaController {
 	public ResponseEntity<?> getNameFilteredPage(@RequestParam final Map<String, String> params) {
 		
 		//Check the pageFormat parameter values.
-		PageFormat pageFormat = Check.checkPageableParams(params,"pageableQuery", "item");
+		PageFormat pageFormat = ParameterCheck.checkPageable(params,"pageableQuery", "item");
 		if (pageFormat.isError()) {
 			return pageFormat.getResponse();
 		}
@@ -133,7 +133,7 @@ public class SpaController {
 	public ResponseEntity<?> getTagsFilteredPage(@RequestParam final Map<String, String> params){
 		
 		//Check the pageFormat parameter values.
-		PageFormat pageFormat = Check.checkPageableParams(params,"pageableQuery", "item");
+		PageFormat pageFormat = ParameterCheck.checkPageable(params,"pageableQuery", "item");
 		if (pageFormat.isError()) {
 			return pageFormat.getResponse();
 		}
@@ -165,7 +165,7 @@ public class SpaController {
 	public ResponseEntity<?> getUserFilteredPage(@RequestParam final Map<String, String> params){
 		
 		//Check the pageFormat parameter values.
-		PageFormat pageFormat = Check.checkPageableParams(params,"pageableQuery", "item");
+		PageFormat pageFormat = ParameterCheck.checkPageable(params,"pageableQuery", "item");
 		if (pageFormat.isError()) {
 			return pageFormat.getResponse();
 		}
@@ -193,7 +193,7 @@ public class SpaController {
 	public ResponseEntity<?> getNameFilteredTagPage(@RequestParam final Map<String, String> params) {
 			
 		//Check the pageFormat parameter values.
-		PageFormat pageFormat = Check.checkPageableParams(params,"pageableQuery", "tag");
+		PageFormat pageFormat = ParameterCheck.checkPageable(params,"pageableQuery", "tag");
 		if (pageFormat.isError()) {
 			return pageFormat.getResponse();
 		}

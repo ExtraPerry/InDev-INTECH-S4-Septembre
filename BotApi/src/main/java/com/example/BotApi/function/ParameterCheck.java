@@ -1,4 +1,4 @@
-package com.example.BotApi.model.Contract;
+package com.example.BotApi.function;
 
 import java.util.Map;
 
@@ -6,13 +6,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.example.BotApi.model.Contract.AdminFormat;
+import com.example.BotApi.model.Contract.PageFormat;
+
 /**
  * Class used to check any http parameters that will go through the RestControllers.
  * So a class used to provide custom functions.
  * 
  * @author Gervais Pierre
 */
-public class Check {
+public class ParameterCheck {
 	
 	/**
 	 * Used to check GetRequest that need a Pageable return.
@@ -21,11 +24,11 @@ public class Check {
 	 * @param paramType : Is it a pageable : "pageable" ? & Is there a query : "pageableQuery" ?
 	 * @param checkType : Used to determine by what attributes it can be sorted based on intended return class : "item", "tag", "category", "generic".
 	 * 
-	 * @return {@link PageFormat} : Can return either the proper values to build a {@link PageRequest} or return a {@link ResponseEntity} if the parameters are incorrect. {@link PageFormat} has a {@link PageFormat}.isError() function to determine which it contains. 
+	 * @return {@link PageFormat} : Can return either the proper values to build a {@link PageRequest} or return a {@link ResponseEntity} if the parameters are incorrect. {@link PageFormat} has a .isError() function to determine which it contains. 
 	 * 
 	 * @author Gervais Pierre
 	 */
-	public static PageFormat checkPageableParams(final Map<String, String> params,final String paramType, final String checkType) {
+	public static PageFormat checkPageable(final Map<String, String> params,final String paramType, final String checkType) {
 		
 		switch(paramType) {	//Check if the request parameters are valid. Based on the indented parameters that should be received. if not return the HttpStatus.
 		
@@ -91,7 +94,16 @@ public class Check {
 	}
 	
 	
-	public static AdminFormat checkAdminDeleteParams(final Map<String, String> params) {
+	/**
+	 * Used to check DeleteRequest made by an admin.
+	 * 
+	 * @param params : The http RequestParams.
+	 * 
+	 * @return {@link AdminFormat} : Can return the id integer or return a {@link ResponseEntity} if the parameters are incorrect. {@link AmdinFormat} has a .isError() function to determine which it contains. 
+	 * 
+	 * @author Gervais Pierre
+	 */
+	public static AdminFormat checkAdminDelete(final Map<String, String> params) {
 		
 		//Check if the request parameter is valid.
 		if (!((params.containsKey("id") && (params.size() == 1)))) {

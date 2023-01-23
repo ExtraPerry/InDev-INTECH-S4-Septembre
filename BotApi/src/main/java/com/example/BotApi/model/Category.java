@@ -72,7 +72,7 @@ public class Category {
 	public DiscordUser getDiscordUser() {
 		return this.discordUser;
 	}
-	private void setDiscordUser(final DiscordUser discordUser) {
+	public void setDiscordUser(final DiscordUser discordUser) {
 		this.discordUser = discordUser;
 	}
 	public Set<Item> getItems(){

@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.BotApi.function.ParameterCheck;
 import com.example.BotApi.model.Category;
 import com.example.BotApi.model.Item;
 import com.example.BotApi.model.Tag;
 import com.example.BotApi.model.Contract.AdminFormat;
-import com.example.BotApi.model.Contract.Check;
 import com.example.BotApi.repository.CategoryRepository;
 import com.example.BotApi.repository.DiscordUserRepository;
 import com.example.BotApi.repository.ItemRepository;
@@ -39,7 +39,7 @@ public class AdminController {
 	public ResponseEntity<?> deleteItem(@RequestParam final Map<String, String> params) {
 		
 		//Check if the http parameters are correct. If not return relevant error code.
-		AdminFormat admin = Check.checkAdminDeleteParams(params);
+		AdminFormat admin = ParameterCheck.checkAdminDelete(params);
 		if (admin.isError()) {
 			return admin.getResponse();
 		}
@@ -65,7 +65,7 @@ public class AdminController {
 	public ResponseEntity<?> deleteTag(@RequestParam final Map<String, String> params) {
 		
 		//Check if the http parameters are correct. If not return relevant error code.
-		AdminFormat admin = Check.checkAdminDeleteParams(params);
+		AdminFormat admin = ParameterCheck.checkAdminDelete(params);
 		if (admin.isError()) {
 			return admin.getResponse();
 		}
@@ -91,7 +91,7 @@ public class AdminController {
 	public ResponseEntity<?> deleteCategory(@RequestParam final Map<String, String> params) {
 		
 		//Check if the http parameters are correct. If not return relevant error code.
-		AdminFormat admin = Check.checkAdminDeleteParams(params);
+		AdminFormat admin = ParameterCheck.checkAdminDelete(params);
 		if (admin.isError()) {
 			return admin.getResponse();
 		}

@@ -76,11 +76,16 @@ module.exports = {
 		let user = interaction.user;
 		
 		//Create random numbers.
-		let messageMaximumTargetNumber = 10;
+		let messageMaximumTargetNumber = 500;
 		let nbMessages = Math.floor(Math.random() * messageMaximumTargetNumber) + 1;
 		
 		//Builde the messages.
 		let timeout = 0;
+		
+		setTimeout(function (){
+  		// Something you want delayed.
+        console.log(`Should be done generating ${nbMessages}. After ${200*nbMessages+200}ms.`);
+		}, 200*nbMessages+200); // How long you want the delay to be, measured in milliseconds.
 		
 		for(let i = 1; i < nbMessages; i++){
 			let linkIndex = Math.floor(Math.random() * linkList.length) + 1;
