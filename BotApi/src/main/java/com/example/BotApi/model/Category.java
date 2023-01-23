@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -28,17 +29,22 @@ public class Category {
 	@JsonBackReference						//Category is the Child of the Item_Category relationship.
 	private Set<Item> items = new HashSet<Item>();
 	
-	@ManyToMany
+	@ManyToMany			
 	@JsonManagedReference					//Category is the Parent of the Category_Tag relationship.
 	private Set<Tag> tags = new HashSet<Tag>();
+	
+	@ManyToOne
+    @JsonManagedReference					//Category is the Parent of the Category_DiscordUser relationship.
+    private DiscordUser discordUser;		//Association to the user who made the tag existing in the database.
 		
 	//Constructor.
 	public Category() {
 		
 	}
 		
-	public Category(final String name) {
+	public Category(final String name, final DiscordUser discordUser) {
 		this.setName(name);
+		this.setDiscordUser(discordUser);
 	}
 		
 	//Getter & Setter.
@@ -63,6 +69,12 @@ public class Category {
 	private void setTagCount(final int tagCount) {
 		this.tagCount = tagCount;
 	}
+	public DiscordUser getDiscordUser() {
+		return this.discordUser;
+	}
+	private void setDiscordUser(final DiscordUser discordUser) {
+		this.discordUser = discordUser;
+	}
 	public Set<Item> getItems(){
 		return this.items;
 	}
@@ -71,15 +83,6 @@ public class Category {
 	}
 		
 	//Custom items attribute.
-	public Item findItem(final String name) {
-	    for (Item item : this.getItems()) {
-	    	if (item.getName().equals(name)) {
-	    		return item;
-	    	}
-	    }
-	    return null;
-	}
-		
 	public void addItem(final Item item) {
 		this.getItems().add(item);
 		this.setItemCount(this.getItems().size());

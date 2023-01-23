@@ -14,7 +14,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	
 	public Page<Item> findAllByTagsIn(Set<Tag> tags, Pageable pageable);
 	
-	public Page<Item> findAllByNameStartingWith(String name, Pageable pageable);
+	public Page<Item> findAllByNameStartingWithIgnoreCase(String name, Pageable pageable);
 	
 	public Page<Item> findAllBydiscordUser(DiscordUser discordUser, Pageable pageable);
 }

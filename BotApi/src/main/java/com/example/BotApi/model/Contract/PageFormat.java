@@ -1,8 +1,13 @@
 package com.example.BotApi.model.Contract;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 
-//Class.
+/**
+ * Class used to contain information to build {@link PageRequest} or a {@link ResponseEntity}. Use .isError() function to determine which it contains. 
+ * 
+ * @author Gervais Pierre
+ */
 public class PageFormat {
 	
 	//Attributes.			//The book refers to the Set<T> that will be instanced into many subLists or pages.

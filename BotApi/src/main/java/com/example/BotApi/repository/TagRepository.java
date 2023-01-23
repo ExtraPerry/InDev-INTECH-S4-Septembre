@@ -10,5 +10,5 @@ public interface TagRepository extends JpaRepository<Tag, Integer> {
 
 	public Tag findByName(String name);
 	
-	public Page<Tag> findAllByNameStartingWith(String name, Pageable pageable);
+	public Page<Tag> findAllByNameStartingWithIgnoreCase(String name, Pageable pageable);
 }

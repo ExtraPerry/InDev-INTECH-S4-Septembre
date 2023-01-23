@@ -7,8 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 //Class.
 @Entity
@@ -26,6 +28,10 @@ public class Tag {
 	@JsonBackReference				//Tag is the Child of the Item_Tag relationship.
 	private Set<Item> items = new HashSet<Item>();
 	
+	@ManyToOne
+    @JsonManagedReference			//Tag is the Parent of the Tag_DiscordUser relationship.
+    private DiscordUser discordUser;//Association to the user who made the tag existing in the database.
+	
 	@ManyToMany(mappedBy = "tags")	//MappedBy relates to the variable name in the other class it is associated to.
 	@JsonBackReference				//Tag is the Child of the Category_Tag relationship.
 	private Set<Category> categories = new HashSet<Category>();
@@ -35,9 +41,10 @@ public class Tag {
 		this.setItemCount(0);
 	}
 	
-	public Tag(final String name) {
+	public Tag(final String name, final DiscordUser discordUser) {
 		this.setName(name);
 		this.setItemCount(0);
+		this.setDiscordUser(discordUser);
 	}
 	
 	//Getter & Setter.
@@ -48,7 +55,7 @@ public class Tag {
 		return name;
 	}
 	private void setName(final String name) {
-		this.name = name;
+		this.name = name.toLowerCase();
 	}
 	public int getItemCount() {
 		return this.itemCount;
@@ -56,20 +63,20 @@ public class Tag {
 	private void setItemCount(final int itemCount) {
 		this.itemCount = itemCount;
 	}
-	private Set<Item> getItems(){
+	public DiscordUser getDiscordUser() {
+		return this.discordUser;
+	}
+	private void setDiscordUser(final DiscordUser discordUser) {
+		this.discordUser = discordUser;
+	}
+	public Set<Item> getItems(){
 		return this.items;
+	}
+	public Set<Category> getCategories(){
+		return this.categories;
 	}
 	
 	//Custom items attribute.
-	public Item findItem(final String name) {
-	    for (Item item : this.getItems()) {
-	    	if (item.getName().equals(name)) {
-	    		return item;
-	    	}
-	    }
-	    return null;
-	}
-		
 	public void addItem(final Item item) {
 		this.getItems().add(item);
 		this.setItemCount(this.getItems().size());
@@ -78,5 +85,12 @@ public class Tag {
 	public void removeItem(final Item item) {
 		this.getItems().remove(item);
 		this.setItemCount(this.getItems().size());
+	}
+	public void addCategory(final Category category) {
+		this.getCategories().add(category);
+	}
+	
+	public void removeCategory(final Category category) {
+		this.getCategories().remove(category);
 	}
 }

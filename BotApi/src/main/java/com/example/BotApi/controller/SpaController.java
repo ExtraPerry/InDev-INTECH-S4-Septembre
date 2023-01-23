@@ -19,6 +19,7 @@ import com.example.BotApi.model.Category;
 import com.example.BotApi.model.DiscordUser;
 import com.example.BotApi.model.Item;
 import com.example.BotApi.model.Tag;
+import com.example.BotApi.model.Contract.Check;
 import com.example.BotApi.model.Contract.PageFormat;
 import com.example.BotApi.repository.CategoryRepository;
 import com.example.BotApi.repository.DiscordUserRepository;
@@ -45,7 +46,7 @@ public class SpaController {
 	public ResponseEntity<?> getItemPage(@RequestParam final Map<String, String> params){
 		
 		//Check the pageFormat parameter values.
-		PageFormat pageFormat = this.checkParams(params,"pageable", "item");
+		PageFormat pageFormat = Check.checkPageableParams(params,"pageable", "item");
 		if (pageFormat.isError()) {
 			return pageFormat.getResponse();
 		}
@@ -66,7 +67,7 @@ public class SpaController {
 	public ResponseEntity<?> getTagsById(@RequestParam final Map<String, String> params){
 		
 		//Check the pageFormat parameter values.
-		PageFormat pageFormat = this.checkParams(params,"pageable", "tag");
+		PageFormat pageFormat = Check.checkPageableParams(params,"pageable", "tag");
 		if (pageFormat.isError()) {
 			return pageFormat.getResponse();
 		}
@@ -88,7 +89,7 @@ public class SpaController {
 	public ResponseEntity<?> getCategoryPage(@RequestParam final Map<String, String> params){
 		
 		//Check the pageFormat parameter values.
-		PageFormat pageFormat = this.checkParams(params,"pageable", "category");
+		PageFormat pageFormat = Check.checkPageableParams(params,"pageable", "category");
 		if (pageFormat.isError()) {
 			return pageFormat.getResponse();
 		}
@@ -110,14 +111,14 @@ public class SpaController {
 	public ResponseEntity<?> getNameFilteredPage(@RequestParam final Map<String, String> params) {
 		
 		//Check the pageFormat parameter values.
-		PageFormat pageFormat = this.checkParams(params,"pageableQuery", "item");
+		PageFormat pageFormat = Check.checkPageableParams(params,"pageableQuery", "item");
 		if (pageFormat.isError()) {
 			return pageFormat.getResponse();
 		}
 		
 		//If everything checks out then return the results. If there were no results return an empty Set.
 		Pageable sortedBy = PageRequest.of(pageFormat.getPage(), pageFormat.getSize(), Sort.by(pageFormat.getSort()));
-		Page<Item> page = this.getItemRepo().findAllByNameStartingWith(params.get("q"), sortedBy);
+		Page<Item> page = this.getItemRepo().findAllByNameStartingWithIgnoreCase(params.get("q"), sortedBy);
 		
 		//Return the page though specify if the content is empty if it is.
 		if (page.getContent().isEmpty()) {
@@ -132,7 +133,7 @@ public class SpaController {
 	public ResponseEntity<?> getTagsFilteredPage(@RequestParam final Map<String, String> params){
 		
 		//Check the pageFormat parameter values.
-		PageFormat pageFormat = this.checkParams(params,"pageableQuery", "item");
+		PageFormat pageFormat = Check.checkPageableParams(params,"pageableQuery", "item");
 		if (pageFormat.isError()) {
 			return pageFormat.getResponse();
 		}
@@ -164,7 +165,7 @@ public class SpaController {
 	public ResponseEntity<?> getUserFilteredPage(@RequestParam final Map<String, String> params){
 		
 		//Check the pageFormat parameter values.
-		PageFormat pageFormat = this.checkParams(params,"pageableQuery", "item");
+		PageFormat pageFormat = Check.checkPageableParams(params,"pageableQuery", "item");
 		if (pageFormat.isError()) {
 			return pageFormat.getResponse();
 		}
@@ -192,14 +193,14 @@ public class SpaController {
 	public ResponseEntity<?> getNameFilteredTagPage(@RequestParam final Map<String, String> params) {
 			
 		//Check the pageFormat parameter values.
-		PageFormat pageFormat = this.checkParams(params,"pageableQuery", "tag");
+		PageFormat pageFormat = Check.checkPageableParams(params,"pageableQuery", "tag");
 		if (pageFormat.isError()) {
 			return pageFormat.getResponse();
 		}
 			
 		//If everything checks out then return the results. If there were no results return an empty Set.
 		Pageable sortedBy = PageRequest.of(pageFormat.getPage(), pageFormat.getSize(), Sort.by(pageFormat.getSort()));
-		Page<Tag> page = this.getTagRepo().findAllByNameStartingWith(params.get("q"), sortedBy);
+		Page<Tag> page = this.getTagRepo().findAllByNameStartingWithIgnoreCase(params.get("q"), sortedBy);
 			
 		//Return the page though specify if the content is empty if it is.
 		if (page.getContent().isEmpty()) {
@@ -222,74 +223,4 @@ public class SpaController {
 	private DiscordUserRepository getDiscordUserRepo() {
 		return this.discordUserRepo;
 	}
-	
-	
-	//Custom functions.
-	//Used to check GetRequest that need a Pageable return.
-	private PageFormat checkParams(final Map<String, String> params,final String paramType, final String checkType) {
-		
-		switch(paramType) {	//Check if the request parameters are valid. Based on the indented parameters that should be received. if not return the HttpStatus.
-		
-			case "pageable":
-				if (!(params.containsKey("page") && params.containsKey("size") && params.containsKey("sort") && (params.size() == 3))) {
-					return new PageFormat(new ResponseEntity<>("Parameters are not valid. Must include [page, size and sort].", HttpStatus.BAD_REQUEST));
-				}
-				break;
-				
-			case "pageableQuery":
-				if (!(params.containsKey("q") && params.containsKey("page") && params.containsKey("size") && params.containsKey("sort") && (params.size() == 4))) {
-					return new PageFormat(new ResponseEntity<>("Parameters are not valid. Must include [q, page, size and sort].", HttpStatus.BAD_REQUEST));
-				}
-				break;
-		}
-		
-		//Check & Convert to an integer the String value of the page & size parameter.
-		int page;
-		int size;
-		try {
-			page = Integer.parseInt(params.get("page"));
-			size = Integer.parseInt(params.get("size"));
-		}catch(NumberFormatException error) {
-			return new PageFormat(new ResponseEntity<>("Page or Size was not a valid number. Must be an integer.", HttpStatus.BAD_REQUEST));
-		}		
-		
-		//Get the sort String and decide which type of check it should go through.
-		String sort = params.get("sort");
-		switch(checkType) {	//Check if the sort string is a valid authorised one. Based on the type of Object that must be returned by the endpoint.
-		
-			case "item":
-				if (!(sort.equals("id") || sort.equals("name") || sort.equals("discordUser") || sort.equals("time"))) {
-					return new PageFormat(new ResponseEntity<>("Sort value is not valid. Try [id, name, discordUser or time].", HttpStatus.BAD_REQUEST));
-				}
-				break;
-			
-			case "tag":
-				if (!(sort.equals("id") || sort.equals("name") || sort.equals("itemCount"))) {
-					return new PageFormat(new ResponseEntity<>("Sort value is not valid. Try [id, name, itemCount].", HttpStatus.BAD_REQUEST));
-				}
-				break;
-			
-			case "category":
-				if (!(sort.equals("id") || sort.equals("name") || sort.equals("itemCount") || sort.equals("tagCount"))) {
-					return new PageFormat(new ResponseEntity<>("Sort value is not valid. Try [id, name, itemCount, tagCount].", HttpStatus.BAD_REQUEST));
-				}
-				break;
-
-			case "generic":
-				if (!(sort.equals("id") || sort.equals("name"))) {
-					return new PageFormat(new ResponseEntity<>("Sort value is not valid. Try [id, name].", HttpStatus.BAD_REQUEST));
-				}
-				break;
-			
-			default:
-				//If the search type is null or wrong then sort by Id. Since all models should have an Id.
-				sort = "id";
-				break;
-		}
-		
-		//If all check out return a PageFormat.
-		return new PageFormat(page, size, sort);
-
-	}
-	
 }
