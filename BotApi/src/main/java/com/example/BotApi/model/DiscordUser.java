@@ -21,7 +21,6 @@ public class DiscordUser {
 	//Attributes.
 	private String name;							//NameTag of the discord user.
 	private String userId;							//UserId of the discord user.
-	private
 	
 	@OneToMany(mappedBy = "discordUser")			//MappedBy relates to the variable name in the other class it is associated to.
 	@JsonBackReference								//DiscordUser is the Child of the Item_DiscordUser relationship.
@@ -52,13 +51,13 @@ public class DiscordUser {
 	public String getName() {
 		return name;
 	}
-	public void setName(final String name) {
+	private void setName(final String name) {
 		this.name = name;
 	}
 	public String getUserId() {
 		return userId;
 	}
-	public void setUserId(final String userId) {
+	private void setUserId(final String userId) {
 		this.userId = userId;
 	}
 	public Set<Item> getItems(){

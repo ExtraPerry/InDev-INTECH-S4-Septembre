@@ -1,5 +1,6 @@
 package com.example.BotApi.controller;
 
+import com.example.BotApi.model.Category;
 import com.example.BotApi.model.DiscordUser;
 import com.example.BotApi.model.Item;
 import com.example.BotApi.model.Tag;
@@ -8,7 +9,9 @@ import com.example.BotApi.repository.DiscordUserRepository;
 import com.example.BotApi.repository.ItemRepository;
 import com.example.BotApi.repository.TagRepository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +44,38 @@ public class DiscordController {
 		
 		//<-!!!->
 		//Also technically if a user sends the exact identical modal forms or message it'll make a new item regardless.
-		//A solution to this would be to have on startup or a routine check to find duplicate titles or links and refference them to a seperate list.
+		//A solution to this would be to have on startup or a routine check to find duplicate titles or links and reference them to a separate list.
 		//Like that the admin on the website can decide on how to manage it.
 		
-		//Check if the discord user exists else make a new user. <----->
-		DiscordUser discordUser = this.getDiscordUserRepo().findByuserId(discordMessage.getUserId());
+		//Check if the discord user exists else make a new user. <-----> Check first if more than one user with the same id exist. If so merge em back together.
+		ArrayList<DiscordUser> discordUserList = this.getDiscordUserRepo().findAllByuserId(discordMessage.getUserId());
+		
+		DiscordUser discordUser = null;					//Make an empty discordUser.
+		if (!discordUserList.isEmpty()) {				//If the discordUserList is not empty assign first result to discordUser.
+			discordUser = discordUserList.get(0);
+			if (discordUserList.size() > 1) {			//Check if the list is bigger than 1. If so there is a duplicate object of the same user.
+				discordUserList.remove(discordUser);	//Then remove the initial first result of the discordUser from the list.
+				for (DiscordUser dupplicateDiscordUser : discordUserList) {	//Now go through the list that now only contain the duplicate users.
+					for (Item item : dupplicateDiscordUser.getItems()) {	//Transfer items belonging to the duplicate to the original.
+						discordUser.addItem(item);
+						dupplicateDiscordUser.removeItem(item);
+					}
+					for (Tag tag : dupplicateDiscordUser.getTags()) {	//Transfer tags belonging to the duplicate to the original.
+						discordUser.addTag(tag);
+						dupplicateDiscordUser.removeTag(tag);
+					}
+					for (Category category : dupplicateDiscordUser.getCategories()) {	//Transfer categories belonging to the duplicate to the original.
+						discordUser.addCategory(category);
+						dupplicateDiscordUser.removeCategory(category);
+					}
+					this.getDiscordUserRepo().delete(dupplicateDiscordUser);	//Finally removes the duplicate from the repository.
+					System.out.println("!!! There was a dupplicate user. !!!");
+				}
+			}	//This is a rare exception upon creation of the user. Where two messages are received at milliseconds of interval and check the database if one already exists. 
+		}		//Problem is if they check at such close times the first one hasn't created the user yet. So the second one creates a duplicated user.
+				//But the bot only knows users by their userId (from discord) so when expecting one result looking for the user by it's userId it returns 2 when there should only be 1.
+				//Thus for the next time that duplicate user is requested there must be a system to handle this.
+		
 		if (discordUser == null) {	
 			//Make a new user and store it in the local variable then into the database.
 			discordUser = this.getDiscordUserRepo().save(

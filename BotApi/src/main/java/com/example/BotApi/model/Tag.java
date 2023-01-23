@@ -79,12 +79,12 @@ public class Tag {
 	//Custom items attribute.
 	public void addItem(final Item item) {
 		this.getItems().add(item);
-		this.setItemCount(this.getItems().size());
+		this.setItemCount(this.getItemCount() + 1);
 	}
 	
 	public void removeItem(final Item item) {
 		this.getItems().remove(item);
-		this.setItemCount(this.getItems().size());
+		this.setItemCount(this.getItemCount() - 1);
 	}
 	public void addCategory(final Category category) {
 		this.getCategories().add(category);
