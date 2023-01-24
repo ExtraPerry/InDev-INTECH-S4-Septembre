@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue';
 import AdminView from '../views/AdminView.vue';
+import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '../views/HomeView.vue';
+import AdminView from '../views/AdminView.vue';
+import Oauth2 from "../views/Oauth2.vue";
 
 
 const router = createRouter({
@@ -8,8 +12,13 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'login',
+      component: Oauth2
+    },
+    {
+      path: '/home',
       name: 'home',
-      component: () => import('../views/Oauth2.vue')
+      component: () => import('../views/HomeView.vue')
     },
     {
       path: '/contact',

@@ -1,51 +1,54 @@
-<script setup lang="js">
+<script setup>
+import card from '../components/card.vue';
+import { ref, onMounted, watch } from 'vue';
+import { useInitialItems } from "../stores/initialItems";
+const siteTitle = ref('Titre');
+const initialItems = useInitialItems();
+let items = ref([]);
+
+onMounted(async () => {
+  await initialItems.getInitialItems();
+  items = initialItems.items
+  console.log('SSSS',items)
+  console.log("tags : " + items.tags);
+
+})
 
 
 </script>
 
 <template>
-  <div class="separateur"></div>
+      <header>
+    <nav class="topnav">
+      <button class="btnMenu" @click="$router.push({ name: 'home' })">Home</button>
+      <button class="btnMenu" @click="$router.push({ name: 'contact' })">Contact</button>
+      <button class="btnMenu" @click="$router.push({ name: 'about' })">About</button>
+      <button class="btnMenu" @click="$router.push({ name: 'admin' })">Admin</button>
+      <button @click="fetchTest()">fetchTest</button>
+      <button id="btnDeco" class="btnMenu">Déconnexion</button>
 
-  <div class="sBar">
-    <input type="search" class="searchBar" placeholder="Search...">
-  </div>
-  <div class="separateur"></div>
-
-
-
-  <div class="home">
-    <ul class="wall">
-      <li class="items1">
-        <a class="cards">
-          <p>je suis une carte</p>
-        </a>
-      </li>
-      <li class="items2">
-        <a class="cards">
-          <p>je suis une carte</p>
-        </a>
-      </li>
-      <li class="items3">
-        <a class="cards">
-          <p>je suis une carte</p>
-        </a>
-      </li>
-      <li class="items4">
-        <a class="cards">
-          <p>je suis une carte</p>
-        </a>
-      </li>
-    </ul>
-
-    <div class="separateur"></div>
-
-    <div id="content">
-      <div> <img src="image.png"> </div>
-      <div id="autre"> <img src="image.png"> </div>
+    </nav>
+  </header>
+<div class="home">
+  <div class="wall">
+    <!-- QQQQ {{ initialItems.items[0] }} -->
+    <button @click="initialItems.getInitialItems">getItems</button>
+    <div v-for="item in initialItems.items">
+      <card :siteTitle= item.name :tags=[item.tags] :description=item.description></card>
+      
     </div>
-
-    <div class="separateur"></div>
-
+    <card :siteTitle= siteTitle />
+    <card></card>
+    <card></card>
+    <card></card>
+    <card></card>
+    <card></card>
+    <card></card>
+    <card></card>
+    <card></card>
+    <card></card>
+    
   </div>
-
+</div>
+ 
 </template>

@@ -18,6 +18,18 @@ onMounted(async () => {
 </script>
 
 <template>
+
+<header>
+    <nav class="topnav">
+      <button class="btnMenu" @click="$router.push({ name: 'home' })">Home</button>
+      <button class="btnMenu" @click="$router.push({ name: 'contact' })">Contact</button>
+      <button class="btnMenu" @click="$router.push({ name: 'about' })">About</button>
+      <button class="btnMenu" @click="$router.push({ name: 'admin' })">Admin</button>
+      <button id="btnDeco" class="btnMenu">Déconnexion</button>
+
+    </nav>
+  </header>
+
 <div class="home">
   <div class="wall">
     <!-- QQQQ {{ initialItems.items[0] }} -->

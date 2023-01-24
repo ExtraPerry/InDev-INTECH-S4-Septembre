@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import adminView from '../views/AdminView.vue';
+import Oauth2 from "../views/Oauth2.vue";
+
 
 
 const router = createRouter({
@@ -8,8 +10,13 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'login',
+      component: Oauth2
+    },
+    {
+      path: '/home',
       name: 'home',
-      component: HomeView
+      component: () => import('../views/HomeView.vue')
     },
     {
       path: '/about',
@@ -18,6 +25,11 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: () => import('../views/ContactView.vue')
     },
     {
       path: '/admin',
