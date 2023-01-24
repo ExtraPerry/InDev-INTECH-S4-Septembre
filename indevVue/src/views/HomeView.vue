@@ -4,16 +4,13 @@ import { ref, onMounted, watch } from 'vue';
 import { useInitialItems } from "../stores/initialItems";
 const siteTitle = ref('Titre');
 const initialItems = useInitialItems();
-let items = ref('');
+let items = ref([]);
 
 onMounted(async () => {
   await initialItems.getInitialItems();
   items = initialItems.items
-
-  console.log('SSSS',items);
-})
-watch(items, async (newQuestion, oldQuestion) => {
-  console.log('SSSS',newQuestion,  oldQuestion);
+  console.log('SSSS',items)
+  console.log("tags : " + items.tags);
 
 })
 
@@ -23,10 +20,13 @@ watch(items, async (newQuestion, oldQuestion) => {
 <template>
 <div class="home">
   <div class="wall">
-    QQQQ {{ initialItems.items }}
+    <!-- QQQQ {{ initialItems.items[0] }} -->
     <button @click="initialItems.getInitialItems">getItems</button>
+    <div v-for="item in initialItems.items">
+      <card :siteTitle= item.name :tags=[item.tags] :description=item.description></card>
+      
+    </div>
     <card :siteTitle= siteTitle />
-    <card></card>
     <card></card>
     <card></card>
     <card></card>

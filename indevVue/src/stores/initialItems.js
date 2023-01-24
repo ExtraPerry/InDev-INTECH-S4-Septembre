@@ -12,9 +12,9 @@ export const useInitialItems = defineStore('initialItems', () => {
       .catch(err => console.log(err));
 
     console.log('Fetched from: ' + url);
-    items.value = result;
+    items.value = result.content;
     console.log('result',result);
-    console.log('ITEMS', items);
+    console.log('ITEMS', items.value);
   }
 
   return { items, getInitialItems }

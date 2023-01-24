@@ -76,7 +76,7 @@ module.exports = {
 		let user = interaction.user;
 		
 		//Create random numbers.
-		let nbMessages = Math.floor(Math.random() * 542) + 1;
+		let nbMessages = Math.floor(Math.random() * 30) + 1;
 		
 		//Builde the messages.
 		let timeout = 0;
