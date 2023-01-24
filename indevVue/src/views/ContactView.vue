@@ -20,7 +20,7 @@
     </h1>
 
     <h1 class="about">
-      Paul DEVRED,
+      Robin Palmier, Pierre Gervais, Paul Devred, Alexy Vannot
     </h1>
 
     <h1 class="about">

@@ -2,7 +2,7 @@
 import card from '../components/card.vue';
 import { ref, onMounted, watch } from 'vue';
 import { useInitialItems } from "../stores/initialItems";
-const siteTitle = ref('Titre');
+const siteTitle = ref('');
 const initialItems = useInitialItems();
 let items = ref([]);
 
@@ -33,21 +33,10 @@ onMounted(async () => {
 <div class="home">
   <div class="wall">
     <!-- QQQQ {{ initialItems.items[0] }} -->
-    <button @click="initialItems.getInitialItems">getItems</button>
+    <!-- <button @click="initialItems.getInitialItems">getItems</button> -->
     <div v-for="item in initialItems.items">
-      <card :siteTitle= item.name :tags=[item.tags] :description=item.description></card>
-      
+      <card :siteTitle= item.name :tags=[item.tags] :description=item.description :link=item.link></card>
     </div>
-    <card :siteTitle= siteTitle />
-    <card></card>
-    <card></card>
-    <card></card>
-    <card></card>
-    <card></card>
-    <card></card>
-    <card></card>
-    <card></card>
-    <card></card>
     
   </div>
 </div>
