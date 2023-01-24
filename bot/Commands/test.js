@@ -81,6 +81,11 @@ module.exports = {
 		//Builde the messages.
 		let timeout = 0;
 		
+		setTimeout(function (){
+  		// Something you want delayed.
+        console.log(`Should be done generating ${nbMessages}. After ${200*nbMessages+200}ms.`);
+		}, 200*nbMessages+200); // How long you want the delay to be, measured in milliseconds.
+		
 		for(let i = 1; i < nbMessages; i++){
 			let linkIndex = Math.floor(Math.random() * linkList.length) + 1;
 			let nbTags = Math.floor(Math.random() * 6) + 1;

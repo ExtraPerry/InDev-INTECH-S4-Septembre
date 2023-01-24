@@ -9,5 +9,5 @@ module.exports = async (json) => {
         	body: json
     	})
     	.then(res => res.text()) // Wait for json response
-    	.then(text => console.log(`In'DevR >>> Message sent to api successfuly. Response : ${text}.`));
+    	.then(text => console.log(`In'DevR >>> Message sent to api successfuly. Response : ${text}`));
 }

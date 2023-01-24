@@ -67,7 +67,10 @@ client.on(Events.InteractionCreate, async interaction => {
 		console.log(`In'DevE >>> No command matching ${interaction.commandName} was found for ${interaction.user.id}.`);
 		return;
 	}
-
+	
+	//let adminBool;
+	//interaction.guild.members.fetch(interaction.user).then(member => member.permissions.has("ADMINISTRATOR")).then(admin => adminBool = admin);
+	
 	try {       //Attempt to execute the Command.
 		await command.execute(interaction);
         console.log(`In'DevR >>> Replied to ${interaction.user.id} for "${interaction.commandName}" Command.`);
@@ -94,6 +97,9 @@ client.on(Events.InteractionCreate, async interaction =>{
 		console.log(`In'DevE >>> No ModalSubmit response matching ${interaction.customId} was found for ${interaction.user.id}.`);
 		return;
 	}
+	
+	//let adminBool;
+	//interaction.guild.members.fetch(interaction.user).then(member => member.permissions.has("ADMINISTRATOR")).then(admin => adminBool = admin);
 	
 	try {       //Attempt to execute the response to the ModalSubmit.
 		await command.respond(interaction);

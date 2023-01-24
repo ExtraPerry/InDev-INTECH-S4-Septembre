@@ -24,7 +24,15 @@ public class DiscordUser {
 	
 	@OneToMany(mappedBy = "discordUser")			//MappedBy relates to the variable name in the other class it is associated to.
 	@JsonBackReference								//DiscordUser is the Child of the Item_DiscordUser relationship.
-	private Set<Item> Items = new HashSet<Item>();	//Association to the items created by the discord user.
+	private Set<Item> items = new HashSet<Item>();	//Association to the items created by the discord user.
+	
+	@OneToMany(mappedBy = "discordUser")			//MappedBy relates to the variable name in the other class it is associated to.
+	@JsonBackReference								//DiscordUser is the Child of the Tag_DiscordUser relationship.
+	private Set<Tag> tags = new HashSet<Tag>();		//Association to the items created by the discord user.
+	
+	@OneToMany(mappedBy = "discordUser")			//MappedBy relates to the variable name in the other class it is associated to.
+	@JsonBackReference								//DiscordUser is the Child of the Category_DiscordUser relationship.
+	private Set<Category> categories = new HashSet<Category>();//Association to the items created by the discord user.
 
 	//Constructor.
 	public DiscordUser() {
@@ -43,35 +51,43 @@ public class DiscordUser {
 	public String getName() {
 		return name;
 	}
-	public void setName(final String name) {
+	private void setName(final String name) {
 		this.name = name;
 	}
 	public String getUserId() {
 		return userId;
 	}
-	public void setUserId(final String userId) {
+	private void setUserId(final String userId) {
 		this.userId = userId;
 	}
 	public Set<Item> getItems(){
-		return this.Items;
+		return this.items;
+	}
+	public Set<Tag> getTags(){
+		return this.tags;
+	}
+	public Set<Category> getCategories(){
+		return this.categories;
 	}
 	
 	//Custom items attribute.
-	public Item findItem(final String name) {
-	    for (Item item : this.getItems()) {
-	    	if (item.getName().equals(name)) {
-	    		return item;
-	    	}
-	    }
-	    return null;
-	}
-		
 	public void addItem(final Item item) {
 		this.getItems().add(item);
 	}
-	
 	public void removeItem(final Item item) {
 		this.getItems().remove(item);
+	}
+	public void addTag(final Tag tag) {
+		this.getTags().add(tag);
+	}
+	public void removeTag(final Tag tag) {
+		this.getTags().remove(tag);
+	}
+	public void addCategory(final Category category) {
+		this.getCategories().add(category);
+	}
+	public void removeCategory(final Category category) {
+		this.getCategories().remove(category);
 	}
 	
 }

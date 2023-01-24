@@ -94,7 +94,7 @@ public class Item {
 	public DiscordUser getDiscordUser() {
 		return this.discordUser;
 	}
-	private void setDiscordUser(final DiscordUser discordUser) {
+	public void setDiscordUser(final DiscordUser discordUser) {
 		this.discordUser = discordUser;
 	}
 	public String getMessageId() {
@@ -114,15 +114,6 @@ public class Item {
     }
 	
 	//Custom tags attribute.
-    public Tag findTag(final String name) {
-    	for (Tag tag : this.getTags()) {
-    		if (tag.getName().equals(name)) {
-    			return tag;
-    		}
-    	}
-    	return null;
-    }
-    
 	public void addTag(final Tag tag) {
 		this.getTags().add(tag);
 	}
@@ -132,15 +123,6 @@ public class Item {
 	}
 	
 	//Custom categories attribute.
-	public Category findCategory(final String name) {
-    	for (Category category : this.getCategories()) {
-    		if (category.getName().equals(name)) {
-    			return category;
-    		}
-    	}
-    	return null;
-    }
-	
 	public void addCategory(final Category category) {
 		this.getCategories().add(category);
 	}

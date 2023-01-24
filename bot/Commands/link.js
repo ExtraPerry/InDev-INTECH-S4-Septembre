@@ -112,7 +112,17 @@ module.exports = {
 		}
 		
 		//Build a JSON to send to the API.
-		let message = new DiscordMessage(title, link, tags, true, description, user.tag, user.id, null, new Date().getUTCMilliseconds());
+		let message = new DiscordMessage(
+			title, 
+			link, 
+			tags, 
+			true, 
+			description, 
+			user.tag, 
+			user.id,
+			null, 
+			new Date().getUTCMilliseconds()
+		);
 		let json = JSON.stringify(message);
 		console.log(json);
 		try{

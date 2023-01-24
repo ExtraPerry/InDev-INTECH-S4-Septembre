@@ -1,5 +1,6 @@
 package com.example.BotApi.controller;
 
+import com.example.BotApi.function.DuplicateCheck;
 import com.example.BotApi.model.DiscordUser;
 import com.example.BotApi.model.Item;
 import com.example.BotApi.model.Tag;
@@ -12,6 +13,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,20 +33,10 @@ public class DiscordController {
 	
 	//Endpoints.
 	@PostMapping("/addMessage")	//Add a modal form report from the discord bot to the database.
-    public String addMessage(@RequestBody final DiscordMessage discordMessage) {
+    public ResponseEntity<?> addMessage(@RequestBody final DiscordMessage discordMessage) {
 		
-		//<-!!!->
-		//When creating a new tag or user and only when creating a new tag or user for the first time if two messages are received at aprox the same time.
-		//Then it will create a duplicate tag or user inside of the database.
-		//This won't happen though if the tag or user already exists inside of the database beforehand.
-		
-		//<-!!!->
-		//Also technically if a user sends the exact identical modal forms or message it'll make a new item regardless.
-		//A solution to this would be to have on startup or a routine check to find duplicate titles or links and refference them to a seperate list.
-		//Like that the admin on the website can decide on how to manage it.
-		
-		//Check if the discord user exists else make a new user. <----->
-		DiscordUser discordUser = this.findDiscordUserByUserId(this.getDiscordUserRepo().findAll(), discordMessage.getUserId());
+		//Check if the discord user exists else make a new user. <-----> Check first if more than one user with the same id exist. If so merge them back together.
+		DiscordUser discordUser = DuplicateCheck.isDiscordUserDuplicate(discordMessage.getUserId(), this.getDiscordUserRepo());		
 		if (discordUser == null) {	
 			//Make a new user and store it in the local variable then into the database.
 			discordUser = this.getDiscordUserRepo().save(
@@ -58,10 +51,10 @@ public class DiscordController {
 		for (String messageTag : discordMessage.getTags()) {
 			messageTag.toLowerCase();
 			//Check if tag exists.
-			Tag tag = this.findTagByName(this.getTagRepo().findAll(), messageTag);
+			Tag tag = DuplicateCheck.isTagDuplicate(messageTag, this.getTagRepo());
 			if (tag == null) {
 				//Make a new tag and store it in the local variable then into the database.
-				tag = this.getTagRepo().save(new Tag(messageTag));
+				tag = this.getTagRepo().save(new Tag(messageTag, discordUser));
 			}
 			//Save tag to the tag list.
 			tagSet.add(tag);
@@ -87,12 +80,12 @@ public class DiscordController {
 		}
 		
 		//Send response message to confirm everything was done correctly.
-        return ("message added");
+        return new ResponseEntity<>("Message item added succesfully.", HttpStatus.OK);
     }
 	
     @PostMapping("/addMessageFallback")	//It's a testing endpoint for the discord bot to see if it connects properly. (Basically just sending a response).
-    public String fallback() {
-        return ("Nothing added just returned that we recieved something.");
+    public ResponseEntity<?> fallback() {
+        return new ResponseEntity<>("Nothing added just returned that we recieved something.", HttpStatus.OK);
     }
 
     //Getter & Setters.
@@ -107,21 +100,5 @@ public class DiscordController {
 	}
 	
 	//Custom.
-	public DiscordUser findDiscordUserByUserId(final Iterable<DiscordUser> discordUserIterable, final String userId) {
-		for (DiscordUser discordUser : discordUserIterable) {
-			if (userId.equals(discordUser.getUserId())) {
-				return discordUser;
-			}
-		}
-		return null;
-	}
 	
-	public Tag findTagByName (final Iterable<Tag> tagIterable, final String name) {
-		for (Tag tag : tagIterable) {
-			if (name.equals(tag.getName())) {
-				return tag;
-			}
-		}
-		return null;
-	}
 }
