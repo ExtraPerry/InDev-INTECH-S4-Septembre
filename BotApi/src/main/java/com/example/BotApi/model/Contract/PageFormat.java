@@ -1,5 +1,7 @@
 package com.example.BotApi.model.Contract;
 
+import com.example.BotApi.repository.ItemRepository;
+
 //Class.
 public class PageFormat {
 	
