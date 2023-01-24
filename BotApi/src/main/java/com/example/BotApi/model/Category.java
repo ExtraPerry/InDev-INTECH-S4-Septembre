@@ -3,8 +3,10 @@ package com.example.BotApi.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -18,9 +20,11 @@ public class Category {
 		
 	//DB id value attribute.
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.TABLE)
+	@Column(name="category_id")
 	private int id;
 	//Attributes.
+	@Column(name="category_name")
 	private String name;
 	private int itemCount;
 	private int tagCount;

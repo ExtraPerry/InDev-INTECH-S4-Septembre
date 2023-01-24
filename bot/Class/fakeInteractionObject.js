@@ -1,12 +1,13 @@
 //Message.js
 module.exports = 
 		//Class - This class is only needed to store specified information and then serialise it.
-		class PageFormat {
+		class fakeInteraction {
 			//Constructor
-			constructor(page, size, sort){
+			constructor(id, tag){
 				//Attributes.
-				this.page = page;					
-				this.size = size;					
-				this.sort = sort;					
-				}
-}
+				this.user = {id, tag};
+			}
+			reply(){
+				
+			}
+	}

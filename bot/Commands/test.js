@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 var DiscordMessage = require('../Class/DiscordMessage');
-var PageFormat = require('../Class/PageFormat');
 const postMessage = require('../Functions/postMessage');
 var randomWords = require('random-words');
 
@@ -76,14 +75,15 @@ module.exports = {
 		let user = interaction.user;
 		
 		//Create random numbers.
-		let nbMessages = Math.floor(Math.random() * 30) + 1;
+		let messageMaximumTargetNumber = 30;
+		let nbMessages = Math.floor(Math.random() * messageMaximumTargetNumber) + 1;
 		
 		//Builde the messages.
 		let timeout = 0;
 		
 		setTimeout(function (){
   		// Something you want delayed.
-        console.log(`Should be done generating ${nbMessages}. After ${200*nbMessages+200}ms.`);
+        console.log(`In'DevR >>> Should be done generating ${nbMessages}. After ${200*nbMessages+200}ms.`);
 		}, 200*nbMessages+200); // How long you want the delay to be, measured in milliseconds.
 		
 		for(let i = 1; i < nbMessages; i++){
@@ -126,7 +126,8 @@ module.exports = {
 					.setColor('Green')
 					.setTitle('Content sent to the api successfully.')
 					.setThumbnail('https://s3-eu-west-1.amazonaws.com/assets.atout-on-line.com/images/ingenieur/Logos_Ecoles/2018_2021/intech_300.jpg')
-					.setDescription(`Use http://localhost:8080/getItemsPage and use ${JSON.stringify(new PageFormat(0, 50, "id"))} inside the body. Then change the page number to retrieve more.`)
+					.setDescription(`Use http://localhost:8080/getItemsPage. Then change the page number to retrieve more.`)
+					.setImage('https://media.discordapp.net/attachments/1027191535818784830/1067520052141756476/image.png?width=1920&height=270')
 					],
 				ephemeral: true
 			});
