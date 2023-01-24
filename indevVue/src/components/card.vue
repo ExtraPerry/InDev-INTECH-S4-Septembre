@@ -18,13 +18,14 @@
             <p class="siteTitle">{{siteTitle}}</p>
             <p class="title">{{title}}</p>
             <p class="description">{{description}}</p>
-            <div class="tags">
-                <li v-for="tag in tags">
+                <span v-for="tag in tags">
                     <span v-for="object in tag">
-                        {{ object.name }}
+                        <div class="tags">
+                            {{ object.name }}
+                        </div>
                     </span>
-                </li>
-            </div>
+
+                </span>
         </div>
       
     </div>
@@ -71,7 +72,9 @@
     .tags {
         background-color: #292b2f;
         border-radius: 5px;
-        padding: 2px;
+        padding: 0.1em;
+        margin: 0.1em;
+        display: inline;
     }
 
 </style>
