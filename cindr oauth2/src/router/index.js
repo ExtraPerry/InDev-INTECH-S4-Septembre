@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import adminView from '../views/AdminView.vue';
+import HomeView from '../views/HomeView.vue';
+import AdminView from '../views/AdminView.vue';
+import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '../views/HomeView.vue';
+import AdminView from '../views/AdminView.vue';
 import Oauth2 from "../views/Oauth2.vue";
-
 
 
 const router = createRouter({
@@ -19,6 +21,11 @@ const router = createRouter({
       component: () => import('../views/HomeView.vue')
     },
     {
+      path: '/contact',
+      name: 'contact',
+      component: () => import('../views/ContactView.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
@@ -27,15 +34,15 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/contact',
-      name: 'contact',
-      component: () => import('../views/ContactView.vue')
-    },
-    {
       path: '/admin',
       name: 'admin',
-      component: adminView
-    }
+      component: AdminView
+    },
+    {
+      path:'/login',
+      name: 'login',
+      component : () => import('../views/Oauth2.vue')
+    },
   ]
 })
 

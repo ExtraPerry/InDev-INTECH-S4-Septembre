@@ -16,7 +16,23 @@
 
   <div class="fullscreen">
     <h1 class="text">
-    In'Dev est un Projet IT S4 visant à classer et mettre à l'accès de tous les élèves du ESIEA GROUPE, les ressources partager par les éléves sur le Discord de L'ecole.
+      Membres: 
+    </h1>
+
+    <h1 class="about">
+      Robin Palmier, Pierre Gervais, Paul Devred, Alexy Vannot
+    </h1>
+
+    <h1 class="about">
+     Alexy Vanot,
+    </h1>
+
+    <h1 class="about">
+    Robin PALMIER,
+    </h1>
+
+    <h1 class="about">
+    Pierre GERVAIS.
     </h1>
   </div>
 
@@ -26,16 +42,5 @@
       Copyright &copy; In'dev 2022-2023 - All right Reserved
     </p>
   </footer>
-
+  
 </template>
-
-
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>

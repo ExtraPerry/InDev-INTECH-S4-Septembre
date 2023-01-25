@@ -5,6 +5,7 @@ node_modules/
 *.tsbuildinfo
 web_modules/
 jspm_packages/
+config.json
 
 # Runtime data
 pids
@@ -23,9 +24,7 @@ npm-debug.log*
 *.iws
 *.jar
 *.sw?
-<<<<<<< HEAD
 bot/config.json
-=======
 *~
 .#*
 .*.md.html
@@ -62,4 +61,6 @@ target
 secrets.yml
 .gradletasknamecache
 .sts4-cache
->>>>>>> origin/main
+package.json
+package-lock.json
+bot/node_modules/.package-lock.json

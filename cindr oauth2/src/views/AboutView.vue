@@ -9,6 +9,7 @@
       <button class="btnMenu" @click="$router.push({ name: 'contact' })">Contact</button>
       <button class="btnMenu" @click="$router.push({ name: 'about' })">About</button>
       <button class="btnMenu" @click="$router.push({ name: 'admin' })">Admin</button>
+      <button @click="fetchTest()">fetchTest</button>
       <button id="btnDeco" class="btnMenu">Déconnexion</button>
 
     </nav>
@@ -28,14 +29,3 @@
   </footer>
 
 </template>
-
-
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,7 +48,9 @@ public class SpaController {
 	
 	
 	//Endpoints.
+
 	//Get a page of items.
+	@CrossOrigin(origins = "http://127.0.0.1:5173/")
 	@GetMapping("/getItemsPage")	//This will be used to get an infinite scrolling page by requesting it in portions at a time.
 	public ResponseEntity<?> getItemPage(@RequestParam final Map<String, String> params){
 		

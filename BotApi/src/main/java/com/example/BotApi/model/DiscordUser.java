@@ -3,8 +3,10 @@ package com.example.BotApi.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -22,9 +24,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class DiscordUser {
 	//DB id value attribute.
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.TABLE)
+	@Column(name="discord_user_id")
 	private int id;
 	//Attributes.
+	@Column(name="discord_user_name")
 	private String name;							//NameTag of the discord user.
 	private String userId;							//UserId of the discord user.
 	
