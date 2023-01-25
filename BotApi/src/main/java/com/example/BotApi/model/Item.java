@@ -24,7 +24,7 @@ public class Item {
 	
 	//DB id value attribute.
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="item_id")
 	private int id;
 	//Attributes.

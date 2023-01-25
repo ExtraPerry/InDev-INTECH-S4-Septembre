@@ -25,7 +25,7 @@ public class Category {
 		
 	//DB id value attribute.
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="category_id")
 	private int id;
 	//Attributes.

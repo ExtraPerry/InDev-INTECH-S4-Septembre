@@ -1,6 +1,7 @@
 package com.example.BotApi.function;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.example.BotApi.model.Category;
 import com.example.BotApi.model.DiscordUser;
@@ -32,20 +33,21 @@ public class DuplicateCheck {
 	public static DiscordUser isDiscordUserDuplicate(final String userId, DiscordUserRepository discordUserRepo) {
 		
 		//Retrieve a list of all elements matching the userId from the database.
-		ArrayList<DiscordUser> discordUsers = discordUserRepo.findAllByuserId(userId);
+		ArrayList<DiscordUser> discordUsersArray = discordUserRepo.findAllByuserId(userId);
 		
 		//Check if the array list is empty and return null if no object found.
-		if(discordUsers.isEmpty()) {	
+		if(discordUsersArray.isEmpty()) {	
 			return null;
 		}
 		
 		//If the ArrayList isn't empty then it contains at least one user. So retrieve one that will be considered the original.
-		DiscordUser original = discordUsers.get(0);
+		DiscordUser original = discordUsersArray.get(0);
 		//Check if the array list only has one object. If it does then return the object.
-		if(discordUsers.size() == 1) {	
+		if(discordUsersArray.size() == 1) {	
 			return original;
 		}
 		
+		List<DiscordUser> discordUsers = discordUsersArray;
 		//If there is more than 1 then remove the original from the ArrayList.
 		discordUsers.remove(original);	
 		//Now that the original has been removed cycle through the duplicates. And then merge em back into the original.
@@ -88,20 +90,21 @@ public class DuplicateCheck {
 	public static Tag isTagDuplicate(final String name, TagRepository tagRepo) {
 		
 		//Retrieve a list of all elements matching the name from the database.
-		ArrayList<Tag> tags = tagRepo.findAllByNameIgnoreCase(name);
+		ArrayList<Tag> tagsArray = tagRepo.findAllByNameIgnoreCase(name);
 		
 		//Check if the array list is empty and return null if no object found.
-		if(tags.isEmpty()) {	
+		if(tagsArray.isEmpty()) {	
 			return null;
 		}
 		
 		//If the ArrayList isn't empty then it contains at least one user. So retrieve one that will be considered the original.
-		Tag original = tags.get(0);
+		Tag original = tagsArray.get(0);
 		//Check if the array list only has one object. If it does then return the object.
-		if(tags.size() == 1) {	
+		if(tagsArray.size() == 1) {	
 			return original;
 		}
 		
+		List<Tag> tags = tagsArray;
 		//If there is more than 1 then remove the original from the ArrayList.
 		tags.remove(original);	
 		//Now that the original has been removed cycle through the duplicates. And then merge em back into the original.

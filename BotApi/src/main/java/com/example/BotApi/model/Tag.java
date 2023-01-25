@@ -25,7 +25,7 @@ public class Tag {
 	
 	//DB id value attribute.
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="tag_id")
 	private int id;
 	//Attributes.

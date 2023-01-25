@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class DiscordUser {
 	//DB id value attribute.
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="discord_user_id")
 	private int id;
 	//Attributes.
