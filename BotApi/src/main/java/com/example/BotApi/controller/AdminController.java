@@ -20,6 +20,12 @@ import com.example.BotApi.repository.DiscordUserRepository;
 import com.example.BotApi.repository.ItemRepository;
 import com.example.BotApi.repository.TagRepository;
 
+/**
+ * 
+ * 
+ * @author Gervais Pierre
+ *
+ */
 @RestController
 public class AdminController {
 	

@@ -11,6 +11,12 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Class made to represent a DiscordUser. It is the user in sense of the website and of discord.
+ * 
+ * @author Gervais Pierre
+ *
+ */
 @Entity
 @JsonIgnoreProperties({ "items" })	//To get the list of items a user owns and endpoint will have to be built for that.
 public class DiscordUser {

@@ -2,6 +2,13 @@ package com.example.BotApi.model.Contract;
 
 import org.springframework.http.ResponseEntity;
 
+/**
+ * Class used to return information related to checking admin conditions for administrative purposes.
+ * And while checking also retrieve the information else the error information needed for a response.
+ * 
+ * @author Gervais Pierre
+ *
+ */
 public class AdminFormat {
 	
 	//Attributes.

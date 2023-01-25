@@ -11,7 +11,12 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-//Class.
+/**
+ * Class made to represent an item. It is the link that was shared by a user and all relevant data associated to it.
+ * 
+ * @author Gervais Pierre
+ *
+ */
 @Entity
 public class Item {
 	

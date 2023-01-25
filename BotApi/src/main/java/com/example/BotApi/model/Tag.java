@@ -12,7 +12,12 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-//Class.
+/**
+ * Class made to represent a tag. It serves to associate an item to a type.
+ * 
+ * @author Gervais Pierre
+ *
+ */
 @Entity
 public class Tag {
 	

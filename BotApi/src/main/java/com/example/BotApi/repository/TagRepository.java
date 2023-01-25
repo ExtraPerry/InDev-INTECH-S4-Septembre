@@ -8,6 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.BotApi.model.Tag;
 
+/**
+ * 
+ * 
+ * @author Gervais Pierre
+ *
+ */
 public interface TagRepository extends JpaRepository<Tag, Integer> {
 
 	public Tag findByName(String name);

@@ -12,7 +12,12 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-//Class.
+/**
+ * Class made to represent a category. It groups up multiple tags.
+ * 
+ * @author Gervais Pierre
+ *
+ */
 @Entity
 public class Category {
 		

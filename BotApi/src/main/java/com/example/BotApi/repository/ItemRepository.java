@@ -10,6 +10,12 @@ import com.example.BotApi.model.DiscordUser;
 import com.example.BotApi.model.Item;
 import com.example.BotApi.model.Tag;
 
+/**
+ * 
+ * 
+ * @author Gervais Pierre
+ *
+ */
 public interface ItemRepository extends JpaRepository<Item, Integer> {
 	
 	public Page<Item> findAllByTagsIn(Set<Tag> tags, Pageable pageable);

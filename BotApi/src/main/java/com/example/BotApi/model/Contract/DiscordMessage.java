@@ -2,7 +2,12 @@ package com.example.BotApi.model.Contract;
 
 import java.util.Date;
 
-//Class.
+/**
+ * Class used to standardize the information transaction between the discord bot and the api.
+ * 
+ * @author Gervais Pierre
+ *
+ */
 public class DiscordMessage {
 	
 	//Attributes.
