@@ -1,0 +1,6 @@
+{
+    "token":"TOKEN HERE",
+    "clientId": "CLIENT ID HERE - THE BOT INSIDE DISCORD",
+    "guildId": "GUILD ID HERE - THE ID OF THE SERVER IT SHOULD RUN IN",
+    "apiIP" : "http://localhost:8080"
+}
