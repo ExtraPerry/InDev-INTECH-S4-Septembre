@@ -1,6 +1,6 @@
 {
-    "token":"TOKEN HERE",
-    "clientId": "CLIENT ID HERE - THE BOT INSIDE DISCORD",
-    "guildId": "GUILD ID HERE - THE ID OF THE SERVER IT SHOULD RUN IN",
+    "token":"NzQ0MjYyNTI0MTY1MTYxMDYy.GXyhUc.30FXMVkGJiSOv1KF0zh_wo_bM5VEFxgjsw9HV4",
+    "clientId": "744262524165161062",
+    "guildId": "745967184227860600",
     "apiIP" : "http://localhost:8080"
 }
